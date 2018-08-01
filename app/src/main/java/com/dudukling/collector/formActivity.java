@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 
 public class formActivity extends AppCompatActivity {
@@ -24,11 +25,14 @@ public class formActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(formActivity.this, "Salvando..", Toast.LENGTH_SHORT).show();
-
                 Sample sample = helperForm.getSample();
+
+                sampleDAO dao = new sampleDAO(formActivity.this);
+                dao.insert(sample);
+                dao.close();
+
                 Toast.makeText(formActivity.this, "Salvando: " + sample.getIdNum()
                         + " - " + sample.getSpecies() + " - " + sample.getDate() + " !", Toast.LENGTH_LONG).show();
-
                 finish();
             }
         });
