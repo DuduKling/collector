@@ -1,0 +1,29 @@
+{
+  "samples": [
+    {
+      "especie": "Especie 1",
+      "id": "#1111",
+      "data": "01/01/2018"
+    },
+    {
+      "especie": "Especie 2",
+      "id": "#222",
+      "data": "02/01/2018"
+    },
+    {
+      "especie": "Especie 3",
+      "id": "#3333",
+      "data": "03/01/2018"
+    },
+    {
+      "especie": "Especie 4",
+      "id": "#444",
+      "data": "04/01/2018"
+    },
+    {
+      "especie": "Especie 5",
+      "id": "#555",
+      "data": "05/01/2018"
+    }
+  ]
+}
