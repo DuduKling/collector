@@ -25,7 +25,7 @@ class recyclerAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.collection_item, parent, false);
-        aViewHolder holder = new aViewHolder(view);
+        aViewHolder holder = new aViewHolder(view, samples, context);
 
         return holder;
     }
@@ -35,7 +35,7 @@ class recyclerAdapter extends RecyclerView.Adapter {
         aViewHolder holder = (aViewHolder) viewHolder;
         Sample sample  = samples.get(position);
 
-        holder.idNum.setText(sample.getIdNum());
+        holder.idNum.setText("#"+sample.getIdNum());
         holder.species.setText(sample.getSpecies());
         holder.date.setText(sample.getDate());
     }

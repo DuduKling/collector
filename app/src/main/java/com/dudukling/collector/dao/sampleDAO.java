@@ -59,4 +59,11 @@ public class sampleDAO extends SQLiteOpenHelper {
 
         return samples;
     }
+
+    public void delete(Sample sample) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {sample.getId().toString()};
+        db.delete("Collection","id = ?", params);
+    }
 }
