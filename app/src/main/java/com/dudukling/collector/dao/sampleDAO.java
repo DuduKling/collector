@@ -18,7 +18,11 @@ public class sampleDAO extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Collection (id INTEGER PRIMARY KEY, idNum INTEGER, species TEXT NOT NULL, date TEXT NOT NULL);";
+        String sql = "CREATE TABLE Collection (" +
+                " id INTEGER PRIMARY KEY," +
+                " species TEXT NOT NULL," +
+                " date TEXT NOT NULL" +
+                ");";
         db.execSQL(sql);
     }
 
@@ -33,12 +37,11 @@ public class sampleDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues queryData = new ContentValues();
-        queryData.put("idNum", sample.getIdNum());
         queryData.put("species", sample.getSpecies());
         queryData.put("date", sample.getDate());
 
         db.insert("Collection", null, queryData);
-        String sql = "INSERT INTO Collection (idNum, species, date) VALUES (?,?,?)";
+//        String sql = "INSERT INTO Collection (idNum, species, date) VALUES (?,?,?)";
     }
 
     public List<Sample> getSamples() {
@@ -49,7 +52,7 @@ public class sampleDAO extends SQLiteOpenHelper {
         while(c.moveToNext()){
             Sample sample = new Sample();
 
-            sample.setIdNum(c.getString(c.getColumnIndex("idNum")));
+            sample.setId(c.getInt(c.getColumnIndex("id")));
             sample.setSpecies(c.getString(c.getColumnIndex("species")));
             sample.setDate(c.getString(c.getColumnIndex("date")));
 
@@ -62,8 +65,18 @@ public class sampleDAO extends SQLiteOpenHelper {
 
     public void delete(Sample sample) {
         SQLiteDatabase db = getWritableDatabase();
-
-        String[] params = {sample.getId().toString()};
+        String[] params = {String.valueOf(sample.getId())};
         db.delete("Collection","id = ?", params);
+    }
+
+    public int nextID(){
+        String sql = "SELECT MAX(id) AS LAST FROM Collection";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+        int ID = c.getInt(0);
+        c.close();
+
+        return ID;
     }
 }

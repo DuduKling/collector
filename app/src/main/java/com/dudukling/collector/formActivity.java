@@ -1,5 +1,6 @@
 package com.dudukling.collector;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,10 +8,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class formActivity extends AppCompatActivity {
 
@@ -23,9 +30,26 @@ public class formActivity extends AppCompatActivity {
         setTitle("Register");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        helperForm = new formHelper(this);
+//        Intent intent = getIntent();
+//        int lastID = (int) intent.getSerializableExtra("lastID");
 
 
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String todayStringNormal = formatter.format(todayDate);
+
+        TextView tv1 = findViewById(R.id.TextViewDateForm);
+        tv1.setText("Date: " + todayStringNormal);
+
+
+        sampleDAO dao = new sampleDAO(this);
+        int lastID = dao.nextID();
+        dao.close();
+        TextView tv2 = findViewById(R.id.TextViewIDForm);
+        tv2.setText("ID: #" + (lastID + 1));
+
+
+        helperForm = new formHelper(this, todayStringNormal);
 //        Button buttonSaveForm = findViewById(R.id.buttonSaveForm);
 //        buttonSaveForm.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -50,14 +74,13 @@ public class formActivity extends AppCompatActivity {
                 this.finish();
                 break;
             case R.id.menu_save_button:
-                // Toast.makeText(formActivity.this, "Salvando..", Toast.LENGTH_SHORT).show();
                 Sample sample = helperForm.getSample();
 
                 sampleDAO dao = new sampleDAO(formActivity.this);
                 dao.insert(sample);
                 dao.close();
 
-                // Toast.makeText(formActivity.this, "Salvando: " + sample.getIdNum() + " - " + sample.getSpecies() + " - " + sample.getDate() + " !", Toast.LENGTH_LONG).show();
+//                Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
                 finish();
                 break;
         }

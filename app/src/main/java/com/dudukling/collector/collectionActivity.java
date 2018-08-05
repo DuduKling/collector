@@ -18,6 +18,7 @@ import java.util.List;
 
 public class collectionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private int lastID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +27,22 @@ public class collectionActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.lista_collection);
 
+
+
         Button buttonNewSample = findViewById(R.id.buttonNewSample);
         buttonNewSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(collectionActivity.this, "Clicado!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(collectionActivity.this, "Clicado!", Toast.LENGTH_SHORT).show();
 
-                Intent goToFormActivity = new Intent(collectionActivity.this, formActivity.class);
-                startActivity(goToFormActivity);
+            Intent goToFormActivity = new Intent(collectionActivity.this, formActivity.class);
+//            goToFormActivity.putExtra("lastID", lastID);
+            startActivity(goToFormActivity);
             }
         });
 
+
         registerForContextMenu(recyclerView);
-
-
-
     }
 
     @Override
@@ -52,6 +54,7 @@ public class collectionActivity extends AppCompatActivity {
     public void loadRecycler() {
         sampleDAO dao = new sampleDAO(this);
         List<Sample> samples = dao.getSamples();
+//        lastID = dao.nextID();
         dao.close();
 
         recyclerView.setAdapter(new recyclerAdapter(samples, this));
@@ -61,5 +64,4 @@ public class collectionActivity extends AppCompatActivity {
 
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
-
 }
