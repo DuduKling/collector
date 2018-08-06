@@ -20,8 +20,14 @@ public class sampleDAO extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Collection (" +
                 " id INTEGER PRIMARY KEY," +
+                " date TEXT NOT NULL," +
+                " collectorName TEXT NOT NULL," +
                 " species TEXT NOT NULL," +
-                " date TEXT NOT NULL" +
+                " speciesFamily TEXT NOT NULL," +
+                " author TEXT NOT NULL," +
+                " sampleDescription TEXT NOT NULL," +
+                " ambientDescription TEXT NOT NULL," +
+                " notes TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
     }
@@ -37,8 +43,16 @@ public class sampleDAO extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues queryData = new ContentValues();
-        queryData.put("species", sample.getSpecies());
+
         queryData.put("date", sample.getDate());
+        queryData.put("collectorName", sample.getCollectorName());
+
+        queryData.put("species", sample.getSpecies());
+        queryData.put("speciesFamily", sample.getSpeciesFamily());
+        queryData.put("author", sample.getAuthor());
+        queryData.put("sampleDescription", sample.getSampleDescription());
+        queryData.put("ambientDescription", sample.getAmbientDescription());
+        queryData.put("notes", sample.getNotes());
 
         db.insert("Collection", null, queryData);
 //        String sql = "INSERT INTO Collection (idNum, species, date) VALUES (?,?,?)";
@@ -53,8 +67,16 @@ public class sampleDAO extends SQLiteOpenHelper {
             Sample sample = new Sample();
 
             sample.setId(c.getInt(c.getColumnIndex("id")));
-            sample.setSpecies(c.getString(c.getColumnIndex("species")));
             sample.setDate(c.getString(c.getColumnIndex("date")));
+
+            sample.setCollectorName(c.getString(c.getColumnIndex("collectorName")));
+            sample.setSpecies(c.getString(c.getColumnIndex("species")));
+            sample.setSpeciesFamily(c.getString(c.getColumnIndex("speciesFamily")));
+            sample.setAuthor(c.getString(c.getColumnIndex("author")));
+            sample.setSampleDescription(c.getString(c.getColumnIndex("sampleDescription")));
+            sample.setAmbientDescription(c.getString(c.getColumnIndex("ambientDescription")));
+            sample.setNotes(c.getString(c.getColumnIndex("notes")));
+
 
             samples.add(sample);
         }

@@ -1,6 +1,7 @@
 package com.dudukling.collector;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -8,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,14 +70,29 @@ class recyclerAdapter extends RecyclerView.Adapter {
         public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
 //            menu.setHeaderTitle("Selecione a ação:");
 
-            MenuItem menuDelete = menu.add("Deletar");
+            MenuItem menuEdit = menu.add("Editar");
+            menuEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int position = getAdapterPosition();
+                    Sample sample  = samples.get(position);
 
+                    Intent goToFormActivity = new Intent(context, formActivity.class);
+                    goToFormActivity.putExtra("sample", sample);
+//                    Toast.makeText(context, "Edita ai: " + sample.getAmbientDescription(), Toast.LENGTH_SHORT).show();
+                    context.startActivity(goToFormActivity);
+
+                    return false;
+                }
+            });
+
+            MenuItem menuDelete = menu.add("Deletar");
             menuDelete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
 //                    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                    int test = getAdapterPosition();
-                    Sample sample  = samples.get(test);
+                    int position = getAdapterPosition();
+                    Sample sample  = samples.get(position);
 
                     sampleDAO dao = new sampleDAO(context);
                     dao.delete(sample);

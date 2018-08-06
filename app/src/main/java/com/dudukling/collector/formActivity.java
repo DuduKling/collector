@@ -30,10 +30,6 @@ public class formActivity extends AppCompatActivity {
         setTitle("Register");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        Intent intent = getIntent();
-//        int lastID = (int) intent.getSerializableExtra("lastID");
-
-
         Date todayDate = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String todayStringNormal = formatter.format(todayDate);
@@ -41,22 +37,33 @@ public class formActivity extends AppCompatActivity {
         TextView tv1 = findViewById(R.id.TextViewDateForm);
         tv1.setText("Date: " + todayStringNormal);
 
-
-        sampleDAO dao = new sampleDAO(this);
-        int lastID = dao.nextID();
-        dao.close();
-        TextView tv2 = findViewById(R.id.TextViewIDForm);
-        tv2.setText("ID: #" + (lastID + 1));
-
-
         helperForm = new formHelper(this, todayStringNormal);
-//        Button buttonSaveForm = findViewById(R.id.buttonSaveForm);
-//        buttonSaveForm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+
+        Intent intent = getIntent();
+        Sample sample = (Sample) intent.getSerializableExtra("sample");
+        if(sample != null){
+            Toast.makeText(formActivity.this, "Carrega para editar: " + sample.getDate() + " !", Toast.LENGTH_LONG).show();
+            helperForm.fillForm(sample);
+        } else {
+
+
+
+            sampleDAO dao = new sampleDAO(this);
+            int lastID = dao.nextID();
+            dao.close();
+            TextView tv2 = findViewById(R.id.TextViewIDForm);
+            tv2.setText("ID: #" + (lastID + 1));
+
+
+
+//            Button buttonSaveForm = findViewById(R.id.buttonSaveForm);
+//            buttonSaveForm.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
 //
-//            }
-//        });
+//                }
+//            });
+            }
     }
 
     @Override

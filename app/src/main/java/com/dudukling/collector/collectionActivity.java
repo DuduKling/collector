@@ -18,7 +18,6 @@ import java.util.List;
 
 public class collectionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private int lastID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class collectionActivity extends AppCompatActivity {
             //Toast.makeText(collectionActivity.this, "Clicado!", Toast.LENGTH_SHORT).show();
 
             Intent goToFormActivity = new Intent(collectionActivity.this, formActivity.class);
-//            goToFormActivity.putExtra("lastID", lastID);
+//            goToFormActivity.putExtra("sample", sample);
             startActivity(goToFormActivity);
             }
         });
@@ -54,7 +53,6 @@ public class collectionActivity extends AppCompatActivity {
     public void loadRecycler() {
         sampleDAO dao = new sampleDAO(this);
         List<Sample> samples = dao.getSamples();
-//        lastID = dao.nextID();
         dao.close();
 
         recyclerView.setAdapter(new recyclerAdapter(samples, this));
