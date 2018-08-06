@@ -7,6 +7,7 @@ import com.dudukling.collector.model.Sample;
 
 public class formHelper {
     private final String todayStringDB;
+    private final int sampleID;
 
     private TextView fieldIDForm;
     private TextView fieldDateForm;
@@ -19,8 +20,9 @@ public class formHelper {
     private EditText fieldAmbientDescription;
     private EditText fieldNotes;
 
-    public formHelper(formActivity activity, String todayStringDB) {
+    public formHelper(formActivity activity, String todayStringDB, int sampleID) {
         this.todayStringDB = todayStringDB;
+        this.sampleID = sampleID;
 
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
@@ -38,6 +40,7 @@ public class formHelper {
         Sample sample = new Sample();
 
         sample.setDate(todayStringDB);
+        sample.setId(sampleID);
 
         sample.setSpecies(fieldSpecies.getText().toString());
         sample.setCollectorName(fieldCollectorName.getText().toString());

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.dudukling.collector.model.Sample;
 
@@ -40,8 +41,14 @@ public class sampleDAO extends SQLiteOpenHelper {
     }
 
     public void insert(Sample sample) {
-        SQLiteDatabase db = getWritableDatabase();
+        ContentValues queryData = getContentValues(sample);
 
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert("Collection", null, queryData);
+    }
+
+    @NonNull
+    private ContentValues getContentValues(Sample sample) {
         ContentValues queryData = new ContentValues();
 
         queryData.put("date", sample.getDate());
@@ -54,13 +61,13 @@ public class sampleDAO extends SQLiteOpenHelper {
         queryData.put("ambientDescription", sample.getAmbientDescription());
         queryData.put("notes", sample.getNotes());
 
-        db.insert("Collection", null, queryData);
-//        String sql = "INSERT INTO Collection (idNum, species, date) VALUES (?,?,?)";
+        return queryData;
     }
 
     public List<Sample> getSamples() {
         String sql = "SELECT * FROM Collection";
         SQLiteDatabase db = getReadableDatabase();
+
         Cursor c = db.rawQuery(sql, null);
         List<Sample> samples =  new ArrayList<Sample>();
         while(c.moveToNext()){
@@ -100,5 +107,12 @@ public class sampleDAO extends SQLiteOpenHelper {
         c.close();
 
         return ID;
+    }
+
+    public void edit(Sample sample) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues queryData = getContentValues(sample);
+        String[] params = {String.valueOf(sample.getId())};
+        db.update("Collection", queryData, "id=?", params);
     }
 }

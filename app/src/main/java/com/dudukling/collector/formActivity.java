@@ -34,27 +34,24 @@ public class formActivity extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String todayStringNormal = formatter.format(todayDate);
 
-        TextView tv1 = findViewById(R.id.TextViewDateForm);
-        tv1.setText("Date: " + todayStringNormal);
-
-        helperForm = new formHelper(this, todayStringNormal);
-
         Intent intent = getIntent();
         Sample sample = (Sample) intent.getSerializableExtra("sample");
         if(sample != null){
-            Toast.makeText(formActivity.this, "Carrega para editar: " + sample.getDate() + " !", Toast.LENGTH_LONG).show();
+            helperForm = new formHelper(this, todayStringNormal, sample.getId());
+//            Toast.makeText(formActivity.this, "Carrega para editar: " + sample.getDate() + " !", Toast.LENGTH_LONG).show();
             helperForm.fillForm(sample);
+
         } else {
+            helperForm = new formHelper(this, todayStringNormal, 0);
 
-
+            TextView tv1 = findViewById(R.id.TextViewDateForm);
+            tv1.setText("Date: " + todayStringNormal);
 
             sampleDAO dao = new sampleDAO(this);
             int lastID = dao.nextID();
             dao.close();
             TextView tv2 = findViewById(R.id.TextViewIDForm);
             tv2.setText("ID: #" + (lastID + 1));
-
-
 
 //            Button buttonSaveForm = findViewById(R.id.buttonSaveForm);
 //            buttonSaveForm.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +81,12 @@ public class formActivity extends AppCompatActivity {
                 Sample sample = helperForm.getSample();
 
                 sampleDAO dao = new sampleDAO(formActivity.this);
-                dao.insert(sample);
+//                Toast.makeText(formActivity.this, "edit/insert: " + String.valueOf(sample.getId()), Toast.LENGTH_SHORT).show();
+                if(sample.getId() != 0){
+                    dao.edit(sample);
+                } else {
+                    dao.insert(sample);
+                }
                 dao.close();
 
 //                Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
