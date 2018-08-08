@@ -64,6 +64,20 @@ class recyclerAdapter extends RecyclerView.Adapter {
             viewDate = view.findViewById(R.id.textViewDate);
 
             view.setOnCreateContextMenuListener(this);
+
+            final boolean readOnly = true;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Sample sample  = samples.get(position);
+
+                    Intent goToFormActivity = new Intent(context, formActivity.class);
+                    goToFormActivity.putExtra("sample", sample)
+                                    .putExtra("readOnly", readOnly);
+                    context.startActivity(goToFormActivity);
+                }
+            });
         }
 
         @Override

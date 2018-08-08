@@ -23,11 +23,13 @@ public class collectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
-
         recyclerView = findViewById(R.id.lista_collection);
 
+        startNewRegisterButton();
+        registerForContextMenu(recyclerView);
+    }
 
-
+    private void startNewRegisterButton() {
         Button buttonNewSample = findViewById(R.id.buttonNewSample);
         buttonNewSample.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,9 +41,6 @@ public class collectionActivity extends AppCompatActivity {
             startActivity(goToFormActivity);
             }
         });
-
-
-        registerForContextMenu(recyclerView);
     }
 
     @Override
