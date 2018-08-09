@@ -65,7 +65,6 @@ class recyclerAdapter extends RecyclerView.Adapter {
 
             view.setOnCreateContextMenuListener(this);
 
-            final boolean readOnly = true;
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -74,7 +73,7 @@ class recyclerAdapter extends RecyclerView.Adapter {
 
                     Intent goToFormActivity = new Intent(context, formActivity.class);
                     goToFormActivity.putExtra("sample", sample)
-                                    .putExtra("readOnly", readOnly);
+                                    .putExtra("type", "readOnly");
                     context.startActivity(goToFormActivity);
                 }
             });
@@ -82,7 +81,7 @@ class recyclerAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
-//            menu.setHeaderTitle("Selecione a ação:");
+            //menu.setHeaderTitle("Selecione a ação:");
 
             MenuItem menuEdit = menu.add("Editar");
             menuEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -92,8 +91,8 @@ class recyclerAdapter extends RecyclerView.Adapter {
                     Sample sample  = samples.get(position);
 
                     Intent goToFormActivity = new Intent(context, formActivity.class);
-                    goToFormActivity.putExtra("sample", sample);
-//                    Toast.makeText(context, "Edita ai: " + sample.getAmbientDescription(), Toast.LENGTH_SHORT).show();
+                    goToFormActivity.putExtra("sample", sample)
+                                    .putExtra("type", "edit");
                     context.startActivity(goToFormActivity);
 
                     return false;
@@ -104,7 +103,6 @@ class recyclerAdapter extends RecyclerView.Adapter {
             menuDelete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-//                    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
                     int position = getAdapterPosition();
                     Sample sample  = samples.get(position);
 
@@ -114,7 +112,7 @@ class recyclerAdapter extends RecyclerView.Adapter {
                     dao.close();
 
                     notifyDataSetChanged();
-                    //Toast.makeText(context, "Deleta ai: " + test, Toast.LENGTH_SHORT).show();
+
                     return false;
                 }
             });

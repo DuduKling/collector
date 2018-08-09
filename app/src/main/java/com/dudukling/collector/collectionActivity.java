@@ -37,7 +37,7 @@ public class collectionActivity extends AppCompatActivity {
             //Toast.makeText(collectionActivity.this, "Clicado!", Toast.LENGTH_SHORT).show();
 
             Intent goToFormActivity = new Intent(collectionActivity.this, formActivity.class);
-//            goToFormActivity.putExtra("sample", sample);
+            goToFormActivity.putExtra("type", "new");
             startActivity(goToFormActivity);
             }
         });

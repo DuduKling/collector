@@ -225,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Sample Description"
-                android:inputType="textPersonName"/>
+                android:inputType="textMultiLine"/>
         </android.support.design.widget.TextInputLayout>
 
         <!--<EditText-->

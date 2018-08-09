@@ -1,14 +1,30 @@
 package com.dudukling.collector;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class formHelper {
-    private final String todayStringDB;
     private final int sampleID;
 
     private TextView fieldIDForm;
@@ -22,53 +38,100 @@ public class formHelper {
     private EditText fieldAmbientDescription;
     private EditText fieldNotes;
 
-    public formHelper(formActivity activity, String todayStringDB, int sampleID, Boolean readOnly) {
-        this.todayStringDB = todayStringDB;
-        this.sampleID = sampleID;
+    private static EditText fieldEditTextGPSLatitude;
+    private static EditText fieldEditTextGPSLongitude;
+    private static EditText fieldEditTextGPSAltitude;
+
+    public formHelper(formActivity activity, String formType, Sample sample) {
+        if (sample != null) {
+            this.sampleID = sample.getId();
+        } else {
+            this.sampleID = 0;
+        }
+
 
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
+        Button cameraButton = activity.findViewById(R.id.buttonCamera);
 
-        //fieldCollectorName = activity.findViewById(R.id.editTextCollectorName);
         TextInputLayout textInputCollectorName = activity.findViewById(R.id.editTextCollectorName);
         fieldCollectorName = textInputCollectorName.getEditText();
-        if(readOnly){disableEditText(fieldCollectorName);}
 
-        //fieldSpecies = activity.findViewById(R.id.editTextSpecies);
         TextInputLayout textInputSpecies = activity.findViewById(R.id.editTextSpecies);
         fieldSpecies = textInputSpecies.getEditText();
-        if(readOnly){disableEditText(fieldSpecies);}
 
-        //fieldSpeciesFamily = activity.findViewById(R.id.editTextSpeciesFamily);
         TextInputLayout textInputSpeciesFamily = activity.findViewById(R.id.editTextSpeciesFamily);
         fieldSpeciesFamily = textInputSpeciesFamily.getEditText();
-        if(readOnly){disableEditText(fieldSpeciesFamily);}
 
-        //fieldAuthor = activity.findViewById(R.id.editTextAuthor);
         TextInputLayout textInputAuthor = activity.findViewById(R.id.editTextAuthor);
         fieldAuthor = textInputAuthor.getEditText();
-        if(readOnly){disableEditText(fieldAuthor);}
 
-        //fieldSampleDescription = activity.findViewById(R.id.editTextSampleDescription);
         TextInputLayout textInputSampleDescription = activity.findViewById(R.id.editTextSampleDescription);
         fieldSampleDescription = textInputSampleDescription.getEditText();
-        if(readOnly){disableEditText(fieldSampleDescription);}
 
-        //fieldAmbientDescription = activity.findViewById(R.id.editTextAmbientDescription);
         TextInputLayout textInputAmbientDescription = activity.findViewById(R.id.editTextAmbientDescription);
         fieldAmbientDescription = textInputAmbientDescription.getEditText();
-        if(readOnly){disableEditText(fieldAmbientDescription);}
 
-        //fieldNotes = activity.findViewById(R.id.editTextNotes);
         TextInputLayout textInputNotes = activity.findViewById(R.id.editTextNotes);
         fieldNotes = textInputNotes.getEditText();
-        if(readOnly){disableEditText(fieldNotes);}
+
+        TextInputLayout editTextGPSLatitude = activity.findViewById(R.id.editTextGPSLatitude);
+        fieldEditTextGPSLatitude = editTextGPSLatitude.getEditText();
+
+        TextInputLayout editTextGPSLongitude = activity.findViewById(R.id.editTextGPSLongitude);
+        fieldEditTextGPSLongitude = editTextGPSLongitude.getEditText();
+
+        TextInputLayout editTextGPSAltitude = activity.findViewById(R.id.editTextGPSAltitude);
+        fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
+
+
+        if (formType.equals("readOnly")) {
+            disableEditText(fieldCollectorName);
+            disableEditText(fieldSpecies);
+            disableEditText(fieldSpeciesFamily);
+            disableEditText(fieldAuthor);
+            disableEditText(fieldSampleDescription);
+            disableEditText(fieldAmbientDescription);
+            disableEditText(fieldNotes);
+            disableEditText(fieldEditTextGPSLatitude);
+            disableEditText(fieldEditTextGPSLongitude);
+            disableEditText(fieldEditTextGPSAltitude);
+
+            cameraButton.setVisibility(View.GONE);
+            fillForm(sample);
+        }
+
+        if (formType.equals("new")) {
+            fieldDateForm.setText("Date: " + todayDate());
+            fieldIDForm.setText("ID: #" + (getLastID(activity) + 1));
+
+            setGPSValues(activity);
+        }
+
+        if (formType.equals("edit")) {
+            fillForm(sample);
+        }
+
+    }
+
+    private int getLastID(formActivity activity) {
+        sampleDAO dao = new sampleDAO(activity);
+        int lastID = dao.nextID();
+        dao.close();
+
+        return lastID;
+    }
+
+    private String todayDate() {
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(todayDate);
     }
 
     public Sample getSample() {
         Sample sample = new Sample();
 
-        sample.setDate(todayStringDB);
+        sample.setDate(todayDate());
         sample.setId(sampleID);
 
         sample.setSpecies(fieldSpecies.getText().toString());
@@ -78,6 +141,10 @@ public class formHelper {
         sample.setSampleDescription(fieldSampleDescription.getText().toString());
         sample.setAmbientDescription(fieldAmbientDescription.getText().toString());
         sample.setNotes(fieldNotes.getText().toString());
+
+        sample.setGPSLatitude(fieldEditTextGPSLatitude.getText().toString());
+        sample.setGPSLongitude(fieldEditTextGPSLongitude.getText().toString());
+        sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
 
         return sample;
@@ -94,6 +161,10 @@ public class formHelper {
         fieldSampleDescription.setText(sample.getSampleDescription());
         fieldAmbientDescription.setText(sample.getAmbientDescription());
         fieldNotes.setText(sample.getNotes());
+
+        fieldEditTextGPSLatitude.setText(sample.getGPSLatitude());
+        fieldEditTextGPSLongitude.setText(sample.getGPSLongitude());
+        fieldEditTextGPSAltitude.setText(sample.getGPSAltitude());
     }
 
     private void disableEditText(EditText editText) {
@@ -101,8 +172,50 @@ public class formHelper {
         editText.setEnabled(false);
         editText.setCursorVisible(false);
         editText.setKeyListener(null);
-//        editText.setBackgroundColor(Color.TRANSPARENT);
+        //editText.setBackgroundColor(Color.TRANSPARENT);
         editText.setTextColor(Color.parseColor("#616161"));
     }
+
+    public static void setGPSValues(formActivity activity) {
+        LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},111);
+            return;
+        }else {
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            final double[] longitude = {location.getLongitude()};
+            final double[] latitude = {location.getLatitude()};
+            final double[] altitude = {location.getAltitude()};
+
+            final LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    longitude[0] = location.getLongitude();
+                    latitude[0] = location.getLatitude();
+                    altitude[0] = location.getAltitude();
+
+                    fieldEditTextGPSLatitude.setText("" + latitude[0], TextView.BufferType.EDITABLE);
+                    fieldEditTextGPSLongitude.setText("" + longitude[0], TextView.BufferType.EDITABLE);
+                    fieldEditTextGPSAltitude.setText("" + altitude[0], TextView.BufferType.EDITABLE);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+        }
+    }
+
 
 }

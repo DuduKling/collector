@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
+import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.util.ArrayList;
@@ -28,7 +30,10 @@ public class sampleDAO extends SQLiteOpenHelper {
                 " author TEXT NOT NULL," +
                 " sampleDescription TEXT NOT NULL," +
                 " ambientDescription TEXT NOT NULL," +
-                " notes TEXT NOT NULL" +
+                " notes TEXT NOT NULL," +
+                " latitude TEXT NOT NULL," +
+                " longitude TEXT NOT NULL," +
+                " altitude TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
     }
@@ -43,6 +48,7 @@ public class sampleDAO extends SQLiteOpenHelper {
     public void insert(Sample sample) {
         ContentValues queryData = getContentValues(sample);
 
+
         SQLiteDatabase db = getWritableDatabase();
         db.insert("Collection", null, queryData);
     }
@@ -52,14 +58,18 @@ public class sampleDAO extends SQLiteOpenHelper {
         ContentValues queryData = new ContentValues();
 
         queryData.put("date", sample.getDate());
-        queryData.put("collectorName", sample.getCollectorName());
 
+        queryData.put("collectorName", sample.getCollectorName());
         queryData.put("species", sample.getSpecies());
         queryData.put("speciesFamily", sample.getSpeciesFamily());
         queryData.put("author", sample.getAuthor());
         queryData.put("sampleDescription", sample.getSampleDescription());
         queryData.put("ambientDescription", sample.getAmbientDescription());
         queryData.put("notes", sample.getNotes());
+
+        queryData.put("latitude", sample.getGPSLatitude());
+        queryData.put("longitude", sample.getGPSLongitude());
+        queryData.put("altitude", sample.getGPSAltitude());
 
         return queryData;
     }
@@ -84,6 +94,9 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setAmbientDescription(c.getString(c.getColumnIndex("ambientDescription")));
             sample.setNotes(c.getString(c.getColumnIndex("notes")));
 
+            sample.setGPSLatitude(c.getString(c.getColumnIndex("latitude")));
+            sample.setGPSLongitude(c.getString(c.getColumnIndex("longitude")));
+            sample.setGPSAltitude(c.getString(c.getColumnIndex("altitude")));
 
             samples.add(sample);
         }

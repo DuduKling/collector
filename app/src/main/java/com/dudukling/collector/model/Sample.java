@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Sample implements Serializable {
     private int id;
     private String date;
+
     private String species;
     private String collectorName;
     private String speciesFamily;
@@ -12,6 +13,10 @@ public class Sample implements Serializable {
     private String sampleDescription;
     private String ambientDescription;
     private String notes;
+
+    private String GPSLatitude;
+    private String GPSLongitude;
+    private String GPSAltitude;
 
     public int getId() {
         return id;
@@ -83,5 +88,29 @@ public class Sample implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getGPSLatitude() {
+        return GPSLatitude;
+    }
+
+    public void setGPSLatitude(String GPSLatitude) {
+        this.GPSLatitude = GPSLatitude;
+    }
+
+    public String getGPSLongitude() {
+        return GPSLongitude;
+    }
+
+    public void setGPSLongitude(String GPSLongitude) {
+        this.GPSLongitude = GPSLongitude;
+    }
+
+    public String getGPSAltitude() {
+        return GPSAltitude;
+    }
+
+    public void setGPSAltitude(String GPSAltitude) {
+        this.GPSAltitude = GPSAltitude;
     }
 }
