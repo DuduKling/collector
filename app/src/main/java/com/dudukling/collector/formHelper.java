@@ -3,6 +3,7 @@ package com.dudukling.collector;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -25,7 +26,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class formHelper {
-    private final int sampleID;
+    private static LocationManager locationManager;
+    private static LocationListener locationListener;
+    private static boolean activeGPS;
+    private int sampleID;
+    private static Button gpsButton;
 
     private TextView fieldIDForm;
     private TextView fieldDateForm;
@@ -42,17 +47,14 @@ public class formHelper {
     private static EditText fieldEditTextGPSLongitude;
     private static EditText fieldEditTextGPSAltitude;
 
-    public formHelper(formActivity activity, String formType, Sample sample) {
-        if (sample != null) {
-            this.sampleID = sample.getId();
-        } else {
-            this.sampleID = 0;
-        }
 
+    public formHelper(final formActivity activity, String formType, Sample sample) {
 
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
         Button cameraButton = activity.findViewById(R.id.buttonCamera);
+        gpsButton = activity.findViewById(R.id.buttonGPS);
+
 
         TextInputLayout textInputCollectorName = activity.findViewById(R.id.editTextCollectorName);
         fieldCollectorName = textInputCollectorName.getEditText();
@@ -97,18 +99,23 @@ public class formHelper {
             disableEditText(fieldEditTextGPSLongitude);
             disableEditText(fieldEditTextGPSAltitude);
 
+            sampleID = sample.getId();
             cameraButton.setVisibility(View.GONE);
+            gpsButton.setVisibility(View.GONE);
             fillForm(sample);
         }
 
         if (formType.equals("new")) {
+            sampleID = 0;
+
             fieldDateForm.setText("Date: " + todayDate());
             fieldIDForm.setText("ID: #" + (getLastID(activity) + 1));
 
-            setGPSValues(activity);
+            toggleGPS(activity);
         }
 
         if (formType.equals("edit")) {
+            sampleID = sample.getId();
             fillForm(sample);
         }
 
@@ -176,26 +183,40 @@ public class formHelper {
         editText.setTextColor(Color.parseColor("#616161"));
     }
 
-    public static void setGPSValues(formActivity activity) {
-        LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+    private void enableEditText(EditText editText){
+        editText.setFocusable(true);
+        editText.setEnabled(true);
+        editText.setCursorVisible(true);
+//        editText.setKeyListener(null);
+        //editText.setBackgroundColor(Color.TRANSPARENT);
+        editText.setTextColor(Color.parseColor("#616161"));
+    }
+
+    private static void setGPSValues(final formActivity activity) {
+        activeGPS = true;
+        gpsButton.setBackgroundResource(R.drawable.ic_pause);
+
+        locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},111);
             return;
-        }else {
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            final double[] longitude = {location.getLongitude()};
-            final double[] latitude = {location.getLatitude()};
-            final double[] altitude = {location.getAltitude()};
+        }else{
+            final double[] longitude = {0};
+            final double[] latitude = {0};
+            final double[] altitude = {0};
 
-            final LocationListener locationListener = new LocationListener() {
+            locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    longitude[0] = location.getLongitude();
-                    latitude[0] = location.getLatitude();
-                    altitude[0] = location.getAltitude();
+                    if(location != null) {
+                        longitude[0] = location.getLongitude();
+                        latitude[0] = location.getLatitude();
+                        altitude[0] = location.getAltitude();
 
-                    fieldEditTextGPSLatitude.setText("" + latitude[0], TextView.BufferType.EDITABLE);
-                    fieldEditTextGPSLongitude.setText("" + longitude[0], TextView.BufferType.EDITABLE);
-                    fieldEditTextGPSAltitude.setText("" + altitude[0], TextView.BufferType.EDITABLE);
+                        fieldEditTextGPSLatitude.setText("" + latitude[0], TextView.BufferType.EDITABLE);
+                        fieldEditTextGPSLongitude.setText("" + longitude[0], TextView.BufferType.EDITABLE);
+                        fieldEditTextGPSAltitude.setText("" + altitude[0], TextView.BufferType.EDITABLE);
+                    }
                 }
 
                 @Override
@@ -210,12 +231,34 @@ public class formHelper {
 
                 @Override
                 public void onProviderDisabled(String provider) {
-
+                    if(provider.equals(LocationManager.GPS_PROVIDER)){
+                        Toast.makeText(activity, "Favor habilitar o GPS!", Toast.LENGTH_LONG).show();
+                        Intent startGPSIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        activity.startActivity(startGPSIntent);
+                    }
                 }
             };
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
         }
     }
 
+    public static void toggleGPS(final formActivity activity) {
+        setGPSValues(activity);
+
+        gpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(activeGPS){
+                    activeGPS = false;
+                    locationManager.removeUpdates(locationListener);
+                    gpsButton.setBackgroundResource(R.drawable.ic_play);
+                }else{
+                    setGPSValues(activity);
+                    gpsButton.setBackgroundResource(R.drawable.ic_pause);
+                }
+            }
+        });
+    }
 
 }

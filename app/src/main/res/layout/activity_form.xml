@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:fillViewport="true">
+    <!--android:configChanges="keyboardHidden|orientation|screenLayout|screenSize">-->
 
-    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.constraint.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -29,21 +30,21 @@
             android:layout_height="56dp"
             android:layout_margin="8dp"
             android:background="@drawable/bg_round_green_camera"
-            android:text=""
             android:elevation="6dp"
             android:stateListAnimator="@null"
-            app:layout_constraintBottom_toTopOf="@+id/editTextCollectorName"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewSampleForm"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toTopOf="@+id/imageViewSampleForm"
-            app:layout_constraintVertical_bias="0.83" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewSampleForm" />
 
         <TextView
             android:id="@+id/TextViewIDForm"
             android:layout_width="wrap_content"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +54,10 @@
         <TextView
             android:id="@+id/TextViewDateForm"
             android:layout_width="wrap_content"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="8dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,16 +65,16 @@
             tools:text="Date: 01/01/2018" />
 
         <!--<EditText-->
-            <!--android:id="@+id/editTextCollectorName"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:hint="Collector Name"-->
-            <!--android:inputType="textPersonName"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/TextViewDateForm" />-->
+        <!--android:id="@+id/editTextCollectorName"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:hint="Collector Name"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/TextViewDateForm" />-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextCollectorName"
@@ -82,7 +84,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TextViewDateForm">
@@ -91,22 +93,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Collector Name"
-                android:inputType="textPersonName"/>
-                <!--android:textColor="#0000ff" />-->
+                android:inputType="textPersonName" />
+            <!--android:textColor="#0000ff" />-->
 
         </android.support.design.widget.TextInputLayout>
-
-        <!--<EditText-->
-            <!--android:id="@+id/editTextSpecies"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:hint="Species"-->
-            <!--android:inputType="textPersonName"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintHorizontal_bias="0.0"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextCollectorName" />-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextSpecies"
@@ -128,20 +118,6 @@
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/editTextSpeciesFamily"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginRight="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="Species Family"-->
-            <!--android:inputType="textPersonName"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextSpecies" />-->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextSpeciesFamily"
             android:layout_width="0dp"
@@ -161,20 +137,6 @@
                 android:hint="Species Family"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
-
-
-        <!--<EditText-->
-            <!--android:id="@+id/editTextAuthor"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="Author"-->
-            <!--android:inputType="textPersonName"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintHorizontal_bias="0.0"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextSpeciesFamily" />-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextAuthor"
@@ -196,18 +158,6 @@
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/editTextSampleDescription"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="Sample Description"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextAuthor" />-->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextSampleDescription"
             android:layout_width="0dp"
@@ -227,18 +177,6 @@
                 android:hint="Sample Description"
                 android:inputType="textMultiLine"/>
         </android.support.design.widget.TextInputLayout>
-
-        <!--<EditText-->
-            <!--android:id="@+id/editTextAmbientDescription"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="Ambient Description"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextSampleDescription" />-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextAmbientDescription"
@@ -260,17 +198,6 @@
                 android:inputType="textMultiLine"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/editTextNotes"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:hint="Notes"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextAmbientDescription" />-->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextNotes"
             android:layout_width="0dp"
@@ -291,16 +218,52 @@
                 android:inputType="textMultiLine"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/editTextGPSLatitude"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:hint="Latitude"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextNotes" />-->
+
+        <ImageView
+            android:id="@+id/bg_gps_form"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="16dp"
+            android:background="#ebebeb"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNotes"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:text="GPS"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/buttonGPS"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bg_gps_form" />
+
+        <Button
+            android:id="@+id/buttonGPS"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewGPS"
+            app:layout_constraintEnd_toEndOf="@+id/bg_gps_form"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/bg_gps_form"
+            app:layout_constraintTop_toTopOf="@+id/textViewGPS" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextGPSLatitude"
@@ -313,25 +276,14 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNotes">
+            app:layout_constraintTop_toBottomOf="@+id/textViewGPS">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Latitude"
-                android:inputType="textMultiLine"/>
+                android:inputType="textMultiLine" />
         </android.support.design.widget.TextInputLayout>
-
-        <!--<EditText-->
-            <!--android:id="@+id/editTextGPSLongitude"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:hint="Longitude"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGPSLatitude" />-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextGPSLongitude"
@@ -353,36 +305,15 @@
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!--<EditText-->
-            <!--android:id="@+id/editTextGPSAltitude"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="50dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:layout_marginRight="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:hint="Altitude"-->
-            <!--android:inputType="textPersonName"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGPSLongitude"-->
-            <!--app:layout_constraintVertical_bias="1.0" />-->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextGPSAltitude"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
             app:layout_constraintTop_toBottomOf="@+id/editTextGPSLongitude">
@@ -391,17 +322,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Altitude"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
-
-        <!--<Button-->
-        <!--android:id="@+id/buttonSaveForm"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Salvar"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
