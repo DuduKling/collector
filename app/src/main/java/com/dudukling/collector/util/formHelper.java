@@ -1,10 +1,11 @@
-package com.dudukling.collector;
+package com.dudukling.collector.util;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,20 +16,25 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudukling.collector.R;
 import com.dudukling.collector.dao.sampleDAO;
+import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class formHelper {
     private static LocationManager locationManager;
     private static LocationListener locationListener;
     private static boolean activeGPS;
+    private final ImageView imageViewSample;
     private int sampleID;
     private static Button gpsButton;
 
@@ -53,7 +59,10 @@ public class formHelper {
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
         Button cameraButton = activity.findViewById(R.id.buttonCamera);
+        Button albumButton = activity.findViewById(R.id.buttonAlbum);
         gpsButton = activity.findViewById(R.id.buttonGPS);
+
+        imageViewSample = activity.findViewById(R.id.imageViewSampleForm);
 
 
         TextInputLayout textInputCollectorName = activity.findViewById(R.id.editTextCollectorName);
@@ -87,6 +96,9 @@ public class formHelper {
         fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
 
 
+        cameraButton.setVisibility(View.GONE);
+        albumButton.setVisibility(View.GONE);
+
         if (formType.equals("readOnly")) {
             disableEditText(fieldCollectorName);
             disableEditText(fieldSpecies);
@@ -100,7 +112,12 @@ public class formHelper {
             disableEditText(fieldEditTextGPSAltitude);
 
             sampleID = sample.getId();
-            cameraButton.setVisibility(View.GONE);
+
+            List<String> images = sample.getImagesList();
+            if(images.size() > 1) {
+                albumButton.setVisibility(View.VISIBLE);
+            }
+
             gpsButton.setVisibility(View.GONE);
             fillForm(sample);
         }
@@ -111,19 +128,32 @@ public class formHelper {
             fieldDateForm.setText("Date: " + todayDate());
             fieldIDForm.setText("ID: #" + (getLastID(activity) + 1));
 
+            cameraButton.setVisibility(View.VISIBLE);
+
+            setGPSValues(activity);
             toggleGPS(activity);
         }
 
         if (formType.equals("edit")) {
             sampleID = sample.getId();
             fillForm(sample);
-        }
 
+            activeGPS = false;
+            gpsButton.setBackgroundResource(R.drawable.ic_play);
+            toggleGPS(activity);
+
+            cameraButton.setVisibility(View.VISIBLE);
+            List<String> images = sample.getImagesList();
+            if(images.size() > 1) {
+                albumButton.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
 
     private int getLastID(formActivity activity) {
         sampleDAO dao = new sampleDAO(activity);
-        int lastID = dao.nextID();
+        int lastID = dao.lastID();
         dao.close();
 
         return lastID;
@@ -135,7 +165,7 @@ public class formHelper {
         return formatter.format(todayDate);
     }
 
-    public Sample getSample() {
+    public Sample getSample(List<String> imagesList) {
         Sample sample = new Sample();
 
         sample.setDate(todayDate());
@@ -153,6 +183,9 @@ public class formHelper {
         sample.setGPSLongitude(fieldEditTextGPSLongitude.getText().toString());
         sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
+        sample.setImagesList(imagesList);
+
+        //Toast.makeText(activity,""+formActivity.imagesList,Toast.LENGTH_LONG).show();
 
         return sample;
     }
@@ -172,6 +205,14 @@ public class formHelper {
         fieldEditTextGPSLatitude.setText(sample.getGPSLatitude());
         fieldEditTextGPSLongitude.setText(sample.getGPSLongitude());
         fieldEditTextGPSAltitude.setText(sample.getGPSAltitude());
+
+        List<String> images = sample.getImagesList();
+        if(images.size() > 0) {
+            Bitmap bitmap = BitmapFactory.decodeFile(images.get(0));
+            Bitmap smallerBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
+            imageViewSample.setImageBitmap(smallerBitmap);
+            imageViewSample.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
     }
 
     private void disableEditText(EditText editText) {
@@ -183,17 +224,7 @@ public class formHelper {
         editText.setTextColor(Color.parseColor("#616161"));
     }
 
-    private void enableEditText(EditText editText){
-        editText.setFocusable(true);
-        editText.setEnabled(true);
-        editText.setCursorVisible(true);
-//        editText.setKeyListener(null);
-        //editText.setBackgroundColor(Color.TRANSPARENT);
-        editText.setTextColor(Color.parseColor("#616161"));
-    }
-
-    private static void setGPSValues(final formActivity activity) {
-        activeGPS = true;
+    public static void setGPSValues(final formActivity activity) {
         gpsButton.setBackgroundResource(R.drawable.ic_pause);
 
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
@@ -205,6 +236,8 @@ public class formHelper {
             final double[] longitude = {0};
             final double[] latitude = {0};
             final double[] altitude = {0};
+
+            activeGPS = true;
 
             locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
@@ -244,8 +277,6 @@ public class formHelper {
     }
 
     public static void toggleGPS(final formActivity activity) {
-        setGPSValues(activity);
-
         gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,4 +292,10 @@ public class formHelper {
         });
     }
 
+    public void disableGPS() {
+        if(activeGPS){
+            activeGPS = false;
+            locationManager.removeUpdates(locationListener);
+        }
+    }
 }

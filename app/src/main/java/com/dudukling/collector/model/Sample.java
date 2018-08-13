@@ -1,6 +1,8 @@
 package com.dudukling.collector.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Sample implements Serializable {
     private int id;
@@ -17,6 +19,9 @@ public class Sample implements Serializable {
     private String GPSLatitude;
     private String GPSLongitude;
     private String GPSAltitude;
+
+    private List<String> imagesList  = new ArrayList<String>();
+
 
     public int getId() {
         return id;
@@ -112,5 +117,13 @@ public class Sample implements Serializable {
 
     public void setGPSAltitude(String GPSAltitude) {
         this.GPSAltitude = GPSAltitude;
+    }
+
+    public List<String> getImagesList() {
+        return imagesList;
+    }
+
+    public void setImagesList(List<String> imagesList) {
+        this.imagesList = imagesList;
     }
 }

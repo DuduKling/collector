@@ -37,6 +37,21 @@
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
             app:layout_constraintTop_toBottomOf="@+id/imageViewSampleForm" />
 
+        <Button
+            android:id="@+id/buttonAlbum"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_round_green_album"
+            android:elevation="6dp"
+            android:stateListAnimator="@null"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewSampleForm"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toTopOf="@+id/imageViewSampleForm"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/TextViewIDForm"
             android:layout_width="wrap_content"

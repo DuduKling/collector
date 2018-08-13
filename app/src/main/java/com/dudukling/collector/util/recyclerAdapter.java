@@ -1,7 +1,9 @@
-package com.dudukling.collector;
+package com.dudukling.collector.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -9,15 +11,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.dudukling.collector.R;
 import com.dudukling.collector.dao.sampleDAO;
+import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.util.List;
 
-class recyclerAdapter extends RecyclerView.Adapter {
+public class recyclerAdapter extends RecyclerView.Adapter {
     private List<Sample> samples;
     private Context context;
 
@@ -36,15 +40,25 @@ class recyclerAdapter extends RecyclerView.Adapter {
         return holder;
     }
 
-    @NonNull
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         aViewHolder holder = (aViewHolder) viewHolder;
         Sample sample  = samples.get(position);
 
         holder.viewId.setText("#"+sample.getId());
+        //Toast.makeText(context, "ID: "+sample.getId(), Toast.LENGTH_LONG).show();
         holder.viewSpecies.setText(sample.getSpecies());
         holder.viewDate.setText(sample.getDate());
+
+        List<String> images = sample.getImagesList();
+        if(images.size() > 0) {
+            Bitmap bitmap = BitmapFactory.decodeFile(images.get(0));
+            Bitmap smallerBitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
+            holder.imageViewSample.setImageBitmap(smallerBitmap);
+            holder.imageViewSample.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+
+        //Toast.makeText(context, "PATH: "+images.size(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -56,15 +70,18 @@ class recyclerAdapter extends RecyclerView.Adapter {
         final TextView viewId;
         final TextView viewDate;
         final TextView viewSpecies;
+        private final ImageView imageViewSample;
 
-        public aViewHolder(View view) {
+        aViewHolder(View view) {
             super(view);
             viewId = view.findViewById(R.id.textViewId);
             viewSpecies = view.findViewById(R.id.textViewSpecies);
             viewDate = view.findViewById(R.id.textViewDate);
+            imageViewSample = view.findViewById(R.id.imageViewSample);
 
             view.setOnCreateContextMenuListener(this);
 
+            // Open ReadOnly form
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -36,6 +36,14 @@ public class sampleDAO extends SQLiteOpenHelper {
                 " altitude TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
+
+        String sql2 = "CREATE TABLE Images ( " +
+                "id INTEGER PRIMARY KEY, " +
+                "path TEXT NOT NULL, " +
+                "collectionID INTEGER NOT NULL, " +
+                "FOREIGN KEY (collectionID) REFERENCES Collection(id)" +
+                ");";
+        db.execSQL(sql2);
     }
 
     @Override
@@ -45,12 +53,26 @@ public class sampleDAO extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(Sample sample) {
-        ContentValues queryData = getContentValues(sample);
-
-
+    public void insert(Sample sample, formActivity formActivity) {
         SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues queryData = getContentValues(sample);
         db.insert("Collection", null, queryData);
+
+
+        // Add pictures:
+        ContentValues queryData2 = new ContentValues();
+        List<String> images = sample.getImagesList();
+        int lastId = lastID();
+
+        for(int i=0; i <= (images.size() - 1); i++){
+            queryData2.clear();
+            queryData2.put("path", images.get(i));
+            queryData2.put("collectionID", lastId);
+            db.insert("Images", null, queryData2);
+        }
+
+        //Toast.makeText(formActivity,""+images,Toast.LENGTH_LONG).show();
     }
 
     @NonNull
@@ -75,15 +97,18 @@ public class sampleDAO extends SQLiteOpenHelper {
     }
 
     public List<Sample> getSamples() {
-        String sql = "SELECT * FROM Collection";
         SQLiteDatabase db = getReadableDatabase();
 
+        String sql = "SELECT * FROM Collection";
+
         Cursor c = db.rawQuery(sql, null);
-        List<Sample> samples =  new ArrayList<Sample>();
-        while(c.moveToNext()){
+        List<Sample> samples = new ArrayList<>();
+
+        while (c.moveToNext()) {
             Sample sample = new Sample();
 
-            sample.setId(c.getInt(c.getColumnIndex("id")));
+            int dbSampleID = c.getInt(c.getColumnIndex("id"));
+            sample.setId(dbSampleID);
             sample.setDate(c.getString(c.getColumnIndex("date")));
 
             sample.setCollectorName(c.getString(c.getColumnIndex("collectorName")));
@@ -98,8 +123,20 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setGPSLongitude(c.getString(c.getColumnIndex("longitude")));
             sample.setGPSAltitude(c.getString(c.getColumnIndex("altitude")));
 
+
+            // Pegando imagens
+            List<String> imagesList = new ArrayList<>();
+            String sql2 = "SELECT * FROM Images WHERE collectionID = ?";
+            Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(dbSampleID)});
+            while (c2.moveToNext()) {
+                imagesList.add(c2.getString(c2.getColumnIndex("path")));
+            }
+            sample.setImagesList(imagesList);
+            c2.close();
+
             samples.add(sample);
         }
+
         c.close();
 
         return samples;
@@ -111,7 +148,7 @@ public class sampleDAO extends SQLiteOpenHelper {
         db.delete("Collection","id = ?", params);
     }
 
-    public int nextID(){
+    public int lastID(){
         String sql = "SELECT MAX(id) AS LAST FROM Collection";
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(sql, null);
@@ -127,5 +164,21 @@ public class sampleDAO extends SQLiteOpenHelper {
         ContentValues queryData = getContentValues(sample);
         String[] params = {String.valueOf(sample.getId())};
         db.update("Collection", queryData, "id=?", params);
+    }
+
+    public String countImages(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        String qtdImages = null;
+
+        String sql2 = "SELECT count(*) AS TOTAL FROM Images WHERE collectionID = ?";
+        Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(id)});
+
+        while (c2.moveToNext()) {
+            qtdImages = c2.getString(c2.getColumnIndex("TOTAL"));
+        }
+        c2.close();
+
+
+        return qtdImages;
     }
 }

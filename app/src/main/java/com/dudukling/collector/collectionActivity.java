@@ -6,12 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
+import com.dudukling.collector.util.recyclerAdapter;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class collectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
-        recyclerView = findViewById(R.id.lista_collection);
+        recyclerView = findViewById(R.id.collection_list);
 
         startNewRegisterButton();
         registerForContextMenu(recyclerView);
