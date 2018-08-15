@@ -25,7 +25,9 @@ import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,7 @@ public class formHelper {
     private static LocationListener locationListener;
     private static boolean activeGPS;
     private final ImageView imageViewSample;
+    private final formActivity activity;
     private int sampleID;
     private static Button gpsButton;
 
@@ -55,6 +58,7 @@ public class formHelper {
 
 
     public formHelper(final formActivity activity, String formType, Sample sample) {
+        this.activity = activity;
 
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
@@ -183,7 +187,15 @@ public class formHelper {
         sample.setGPSLongitude(fieldEditTextGPSLongitude.getText().toString());
         sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
-        sample.setImagesList(imagesList);
+
+        sampleDAO dao = new sampleDAO(activity);
+        List<String> imagesListDB = dao.getImagesDB(sample.getId());
+
+        List<String> newestImageList = new ArrayList<>();
+        newestImageList.addAll(imagesListDB);
+        newestImageList.addAll(imagesList);
+
+        sample.setImagesList(newestImageList);
 
         //Toast.makeText(activity,""+formActivity.imagesList,Toast.LENGTH_LONG).show();
 
@@ -296,6 +308,15 @@ public class formHelper {
         if(activeGPS){
             activeGPS = false;
             locationManager.removeUpdates(locationListener);
+        }
+    }
+
+    public static void deleteImagesFromPhoneMemory(Sample sample) {
+        List<String> imagesListToDelete = sample.getImagesList();
+        //Toast.makeText(formActivity.this, "Deletando "+imagesListToDelete.size()+"!", Toast.LENGTH_LONG).show();
+        for(int i = 0; i < imagesListToDelete.size(); i++){
+            File file = new File(imagesListToDelete.get(i));
+            file.delete();
         }
     }
 }

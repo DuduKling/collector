@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,14 +27,16 @@ import java.util.List;
 
 
 public class recyclerAlbumAdapter extends RecyclerView.Adapter {
-    private final int sampleID;
+    private final Sample sample;
+    private final String type;
     private List<String> imagesList;
     private Context context;
 
-    public recyclerAlbumAdapter(Sample sample, albumActivity albumActivity) {
+    public recyclerAlbumAdapter(Sample sample, String type, albumActivity albumActivity) {
         this.context = albumActivity;
         imagesList = sample.getImagesList();
-        sampleID = sample.getId();
+        this.sample = sample;
+        this.type = type;
     }
 
     @NonNull
@@ -64,12 +68,46 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
         return imagesList.size();
     }
 
-    public class albumViewHolder extends RecyclerView.ViewHolder {
+    public class albumViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         private final ImageView imageViewAlbum;
 
         public albumViewHolder(View view) {
             super(view);
             imageViewAlbum = view.findViewById(R.id.imageViewAlbum);
+
+            if(type != null && type.equals("edit")){
+                view.setOnCreateContextMenuListener(this);
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            MenuItem menuDelete = menu.add("Deletar imagem");
+            menuDelete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int position = getAdapterPosition();
+                    int sampleID  = sample.getId();
+
+                    List<String> imageToDelete = new ArrayList<>();
+                    imageToDelete.add(sample.getImagesList().get(position));
+
+                    sampleDAO dao = new sampleDAO(context);
+                    int imageID = dao.getImageIdDB(sample.getImagesList().get(position));
+                    dao.deleteImageFromDB(sampleID, imageID);
+
+                    imagesList = dao.getImagesDB(sampleID);
+                    dao.close();
+
+                    notifyDataSetChanged();
+
+                    Sample sampleToDelete = new Sample();
+                    sampleToDelete.setImagesList(imageToDelete);
+                    formHelper.deleteImagesFromPhoneMemory(sampleToDelete);
+
+                    return false;
+                }
+            });
         }
     }
 }

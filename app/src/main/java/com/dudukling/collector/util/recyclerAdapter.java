@@ -124,6 +124,7 @@ public class recyclerAdapter extends RecyclerView.Adapter {
                     Sample sample  = samples.get(position);
 
                     sampleDAO dao = new sampleDAO(context);
+                    formHelper.deleteImagesFromPhoneMemory(sample);
                     dao.delete(sample);
                     samples = dao.getSamples();
                     dao.close();

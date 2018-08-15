@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
@@ -125,14 +124,8 @@ public class sampleDAO extends SQLiteOpenHelper {
 
 
             // Pegando imagens
-            List<String> imagesList = new ArrayList<>();
-            String sql2 = "SELECT * FROM Images WHERE collectionID = ?";
-            Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(dbSampleID)});
-            while (c2.moveToNext()) {
-                imagesList.add(c2.getString(c2.getColumnIndex("path")));
-            }
+            List<String> imagesList = getImagesDB(dbSampleID);
             sample.setImagesList(imagesList);
-            c2.close();
 
             samples.add(sample);
         }
@@ -142,10 +135,25 @@ public class sampleDAO extends SQLiteOpenHelper {
         return samples;
     }
 
+    public List<String> getImagesDB(int dbSampleID) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        List<String> imagesList = new ArrayList<>();
+        String sql2 = "SELECT * FROM Images WHERE collectionID = ?";
+        Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(dbSampleID)});
+        while (c2.moveToNext()) {
+            imagesList.add(c2.getString(c2.getColumnIndex("path")));
+        }
+        c2.close();
+
+        return imagesList;
+    }
+
     public void delete(Sample sample) {
         SQLiteDatabase db = getWritableDatabase();
         String[] params = {String.valueOf(sample.getId())};
         db.delete("Collection","id = ?", params);
+        db.delete("Images","collectionID = ?", params);
     }
 
     public int lastID(){
@@ -164,21 +172,58 @@ public class sampleDAO extends SQLiteOpenHelper {
         ContentValues queryData = getContentValues(sample);
         String[] params = {String.valueOf(sample.getId())};
         db.update("Collection", queryData, "id=?", params);
-    }
 
-    public String countImages(int id){
-        SQLiteDatabase db = getReadableDatabase();
-        String qtdImages = null;
+        int sampleId = sample.getId();
+        deleteImagesFromDB(sampleId);
 
-        String sql2 = "SELECT count(*) AS TOTAL FROM Images WHERE collectionID = ?";
-        Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(id)});
+        // Add all pictures:
+        ContentValues queryData2 = new ContentValues();
+        List<String> images = sample.getImagesList();
 
-        while (c2.moveToNext()) {
-            qtdImages = c2.getString(c2.getColumnIndex("TOTAL"));
+        for(int i=0; i <= (images.size() - 1); i++){
+            queryData2.clear();
+            queryData2.put("path", images.get(i));
+            queryData2.put("collectionID", sampleId);
+            db.insert("Images", null, queryData2);
         }
-        c2.close();
-
-
-        return qtdImages;
     }
+
+    private void deleteImagesFromDB(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] params = {String.valueOf(id)};
+        db.delete("Images","collectionID = ?", params);
+    }
+
+    public void deleteImageFromDB(int collectionID, int imageID) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] params = {String.valueOf(collectionID), String.valueOf(imageID)};
+        db.delete("Images","collectionID = ? AND id = ?", params);
+    }
+
+    public int getImageIdDB(String imagePath) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT id FROM Images WHERE path = ?";
+        Cursor c = db.rawQuery(sql, new String[]{imagePath});
+        c.moveToFirst();
+        int imageID = c.getInt(0);
+        c.close();
+
+        return imageID;
+    }
+
+//    public String countImages(int id){
+//        SQLiteDatabase db = getReadableDatabase();
+//        String qtdImages = null;
+//
+//        String sql2 = "SELECT count(*) AS TOTAL FROM Images WHERE collectionID = ?";
+//        Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(id)});
+//
+//        while (c2.moveToNext()) {
+//            qtdImages = c2.getString(c2.getColumnIndex("TOTAL"));
+//        }
+//        c2.close();
+//
+//
+//        return qtdImages;
+//    }
 }

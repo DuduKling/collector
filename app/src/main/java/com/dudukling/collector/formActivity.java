@@ -3,6 +3,7 @@ package com.dudukling.collector;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,9 +31,11 @@ import android.widget.Toast;
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 import com.dudukling.collector.util.formHelper;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,13 +48,14 @@ public class formActivity extends AppCompatActivity {
     public static final String EDIT_TITLE = "Edit #";
     public static final int CAMERA_REQUEST_CODE = 222;
     public static final int CAMERA_PERMISSION_CODE = 333;
+    public static final int ALBUM_RESULT_CODE = 444;
 
     private formHelper helperForm;
     private String formType;
-    String photoPath;
     private Sample sample;
-    File photoFile = null;
     public List<String> imagesList = new ArrayList<>();
+    String photoPath;
+    File photoFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +63,17 @@ public class formActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         checkTypeOfForm();
 
-        //sampleDAO dao = new sampleDAO(formActivity.this);
-        //Toast.makeText(formActivity.this,"ID 0: "+dao.countImages(0) + " | ID 1: "+dao.countImages(1) + " | ID 2: "+dao.countImages(2),Toast.LENGTH_LONG).show();
+
+        startMaps();
+    }
+
+    private void startMaps() {
+        FragmentManager fragManager = getSupportFragmentManager();
+        FragmentTransaction tx = fragManager.beginTransaction();
+        tx.replace(R.id.mapFrame, new SupportMapFragment());
+        tx.commit();
     }
 
     private void checkTypeOfForm() {
@@ -101,8 +113,12 @@ public class formActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent goToAlbum = new Intent(formActivity.this, albumActivity.class);
+
+                if(formType.equals("edit")){
+                    goToAlbum.putExtra("type", "edit");
+                }
                 goToAlbum.putExtra("sample", sample);
-                startActivity(goToAlbum);
+                startActivityForResult(goToAlbum, ALBUM_RESULT_CODE);
             }
         });
     }
@@ -213,6 +229,7 @@ public class formActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_delete_button:
+                formHelper.deleteImagesFromPhoneMemory(sample);
                 dao.delete(sample);
                 //Toast.makeText(formActivity.this, "Deleta ai!", Toast.LENGTH_LONG).show();
                 finish();
@@ -244,6 +261,9 @@ public class formActivity extends AppCompatActivity {
 
         Sample sampleSave = helperForm.getSample(imagesList);
         savedInstanceState.putSerializable("sample", sampleSave);
+        savedInstanceState.putSerializable("photoPath", photoPath);
+        savedInstanceState.putSerializable("photoFile", photoFile);
+        savedInstanceState.putSerializable("imagesList", (Serializable) imagesList);
     }
 
     @Override
@@ -251,7 +271,11 @@ public class formActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         Sample sampleSaved = (Sample) savedInstanceState.getSerializable("sample");
+        photoPath = (String) savedInstanceState.getSerializable("photoPath");
+        photoFile = (File) savedInstanceState.getSerializable("photoFile");
+        imagesList = (List<String>) savedInstanceState.getSerializable("imagesList");
         helperForm.fillForm(sampleSaved);
+
     }
 
     @Override
@@ -269,11 +293,30 @@ public class formActivity extends AppCompatActivity {
                 imagesList.add(photoFile.toString());
 
                 //Toast.makeText(formActivity.this, ""+photoFile.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                deleteTempFromPhoneMemory(photoFile.toString());
+            }
+        }
+        if(resultCode == Activity.RESULT_CANCELED){
+            if(requestCode == ALBUM_RESULT_CODE){
+                //Toast.makeText(formActivity.this, "Voltaaaa", Toast.LENGTH_LONG).show();
 
+                sampleDAO dao = new sampleDAO(formActivity.this);
+                int savedSampleID = sample.getId();
+                List<Sample> samples = dao.getSamples();
+                sample = samples.get(savedSampleID - 1);
+                helperForm.fillForm(sample);
             }
         }
 
         //Toast.makeText(formActivity.this, ""+imagesList, Toast.LENGTH_LONG).show();
+    }
+
+    private void deleteTempFromPhoneMemory(String photoFilePath) {
+        File file = new File(photoFilePath);
+        file.delete();
     }
 
     @Override

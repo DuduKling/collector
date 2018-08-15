@@ -19,6 +19,7 @@ public class albumActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Sample sample;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,15 @@ public class albumActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         sample = (Sample) intent.getSerializableExtra("sample");
-        setTitle("Images #" + sample.getId());
+        type = (String) intent.getSerializableExtra("type");
 
+        if(type==null){
+            setTitle("Images #" + sample.getId());
+        }else{
+            setTitle("Edit #" + sample.getId());
+        }
+
+        loadRecycler();
 
         //int sampleID = sample.getId();
         //sampleDAO dao = new sampleDAO(this);
@@ -39,14 +47,14 @@ public class albumActivity extends AppCompatActivity {
         //Toast.makeText(this, "QTD IMAGENS: " + sample.getImagesList().size() + "|" + qtdImgsDB, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadRecycler();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//    }
 
     private void loadRecycler() {
-        recyclerView.setAdapter(new recyclerAlbumAdapter(sample, this));
+        recyclerView.setAdapter(new recyclerAlbumAdapter(sample, type, this));
 
         RecyclerView.LayoutManager layout = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layout);
