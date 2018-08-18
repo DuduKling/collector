@@ -22,9 +22,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 
@@ -64,16 +66,6 @@ public class formActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         checkTypeOfForm();
-
-
-        startMaps();
-    }
-
-    private void startMaps() {
-        FragmentManager fragManager = getSupportFragmentManager();
-        FragmentTransaction tx = fragManager.beginTransaction();
-        tx.replace(R.id.mapFrame, new SupportMapFragment());
-        tx.commit();
     }
 
     private void checkTypeOfForm() {

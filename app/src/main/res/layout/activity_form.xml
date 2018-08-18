@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -336,15 +337,33 @@
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
-        <FrameLayout
-            android:id="@+id/mapFrame"
+        <RelativeLayout
+            android:id="@+id/map_layout"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_margin="8dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintTop_toBottomOf="@id/editTextGPSAltitude"
             app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
-            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"/>
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm">
+
+            <FrameLayout
+                android:id="@+id/mapFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+        </RelativeLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

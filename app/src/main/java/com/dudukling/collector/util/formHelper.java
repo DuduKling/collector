@@ -13,13 +13,20 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudukling.collector.MapFragment;
 import com.dudukling.collector.R;
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
@@ -37,7 +44,7 @@ public class formHelper {
     private static LocationListener locationListener;
     private static boolean activeGPS;
     private final ImageView imageViewSample;
-    private final formActivity activity;
+    private static formActivity activity;
     private int sampleID;
     private static Button gpsButton;
 
@@ -124,6 +131,8 @@ public class formHelper {
 
             gpsButton.setVisibility(View.GONE);
             fillForm(sample);
+
+            startMaps();
         }
 
         if (formType.equals("new")) {
@@ -136,6 +145,7 @@ public class formHelper {
 
             setGPSValues(activity);
             toggleGPS(activity);
+            onChangeLatLong();
         }
 
         if (formType.equals("edit")) {
@@ -145,6 +155,7 @@ public class formHelper {
             activeGPS = false;
             gpsButton.setBackgroundResource(R.drawable.ic_play);
             toggleGPS(activity);
+            onChangeLatLong();
 
             cameraButton.setVisibility(View.VISIBLE);
             List<String> images = sample.getImagesList();
@@ -152,7 +163,43 @@ public class formHelper {
                 albumButton.setVisibility(View.VISIBLE);
             }
 
+            startMaps();
+
         }
+    }
+
+    private void onChangeLatLong() {
+        fieldEditTextGPSLatitude.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s){}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(fieldEditTextGPSLatitude.hasFocus()) {
+                    disableGPSUpdates();
+                    startMaps();
+                }
+            }
+        });
+
+        fieldEditTextGPSLongitude.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s){}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(fieldEditTextGPSLongitude.hasFocus()) {
+                    disableGPSUpdates();
+                    startMaps();
+                }
+            }
+        });
     }
 
     private int getLastID(formActivity activity) {
@@ -238,6 +285,10 @@ public class formHelper {
 
     public static void setGPSValues(final formActivity activity) {
         gpsButton.setBackgroundResource(R.drawable.ic_pause);
+        fieldEditTextGPSLatitude.setFocusableInTouchMode(false);
+        fieldEditTextGPSLatitude.setFocusable(false);
+        fieldEditTextGPSLongitude.setFocusableInTouchMode(false);
+        fieldEditTextGPSLongitude.setFocusable(false);
 
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 
@@ -261,6 +312,8 @@ public class formHelper {
                         fieldEditTextGPSLatitude.setText("" + latitude[0], TextView.BufferType.EDITABLE);
                         fieldEditTextGPSLongitude.setText("" + longitude[0], TextView.BufferType.EDITABLE);
                         fieldEditTextGPSAltitude.setText("" + altitude[0], TextView.BufferType.EDITABLE);
+
+                        startMaps();
                     }
                 }
 
@@ -285,6 +338,7 @@ public class formHelper {
             };
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+            startMaps();
         }
     }
 
@@ -293,15 +347,29 @@ public class formHelper {
             @Override
             public void onClick(View v) {
                 if(activeGPS){
-                    activeGPS = false;
-                    locationManager.removeUpdates(locationListener);
-                    gpsButton.setBackgroundResource(R.drawable.ic_play);
+                    disableGPSUpdates();
+                    fieldEditTextGPSLatitude.setFocusableInTouchMode(true);
+                    fieldEditTextGPSLatitude.setFocusable(true);
+                    fieldEditTextGPSLongitude.setFocusableInTouchMode(true);
+                    fieldEditTextGPSLongitude.setFocusable(true);
                 }else{
                     setGPSValues(activity);
                     gpsButton.setBackgroundResource(R.drawable.ic_pause);
+                    fieldEditTextGPSLatitude.setFocusableInTouchMode(false);
+                    fieldEditTextGPSLatitude.setFocusable(false);
+                    fieldEditTextGPSLongitude.setFocusableInTouchMode(false);
+                    fieldEditTextGPSLongitude.setFocusable(false);
+
+
                 }
             }
         });
+    }
+
+    private static void disableGPSUpdates() {
+        activeGPS = false;
+        locationManager.removeUpdates(locationListener);
+        gpsButton.setBackgroundResource(R.drawable.ic_play);
     }
 
     public void disableGPS() {
@@ -318,5 +386,46 @@ public class formHelper {
             File file = new File(imagesListToDelete.get(i));
             file.delete();
         }
+    }
+
+    private static void startMaps() {
+        fixScrollForMaps();
+
+        FragmentManager fragManager = activity.getSupportFragmentManager();
+        FragmentTransaction tx = fragManager.beginTransaction();
+        tx.replace(R.id.mapFrame, new MapFragment(activity));
+        tx.commit();
+    }
+
+    private static void fixScrollForMaps() {
+        final ScrollView mainScrollView = activity.findViewById(R.id.main_scrollview);
+        ImageView transparentImageView = activity.findViewById(R.id.transparent_image);
+
+        transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
     }
 }
