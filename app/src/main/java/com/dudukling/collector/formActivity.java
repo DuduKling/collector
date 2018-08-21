@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -99,7 +100,7 @@ public class formActivity extends AppCompatActivity {
     }
 
     private void setAlbumAction() {
-        Button albumButton = findViewById(R.id.buttonAlbum);
+        FloatingActionButton albumButton = findViewById(R.id.buttonAlbum);
         albumButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -120,7 +121,7 @@ public class formActivity extends AppCompatActivity {
         boolean rearCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         if(rearCam) {
-            Button cameraButton = findViewById(R.id.buttonCamera);
+            FloatingActionButton cameraButton = findViewById(R.id.buttonCamera);
             cameraButton.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
@@ -192,25 +193,28 @@ public class formActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_save_button:
-                Sample sampleSave = helperForm.getSample(imagesList);
+                if(helperForm.validateForm()){
+                    Sample sampleSave = helperForm.getSample(imagesList);
 
-                if(sample == null){
-                    //Toast.makeText(formActivity.this, "insert", Toast.LENGTH_SHORT).show();
-                    dao.insert(sampleSave, formActivity.this);
-                }else{
-                    //Toast.makeText(formActivity.this, "edit: " + String.valueOf(sample.getId()), Toast.LENGTH_SHORT).show();
-                    dao.edit(sampleSave);
+                    if(sample == null){
+                        //Toast.makeText(formActivity.this, "insert", Toast.LENGTH_SHORT).show();
+                        dao.insert(sampleSave, formActivity.this);
+                    }else{
+                        //Toast.makeText(formActivity.this, "edit: " + String.valueOf(sample.getId()), Toast.LENGTH_SHORT).show();
+                        dao.edit(sampleSave);
+                    }
+                    dao.close();
+
+                    //Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
+                    finish();
                 }
-                dao.close();
-
-                //Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
-                finish();
                 break;
 
             case R.id.menu_edit_button:
                 Intent intent = getIntent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                intent.putExtra("sample", sample).putExtra("type", "edit");
+                intent.putExtra("sample", sample)
+                        .putExtra("type", "edit");
                 finish();
                 overridePendingTransition(0, 0);
                 //Toast.makeText(formActivity.this, "editar", Toast.LENGTH_LONG).show();
@@ -243,6 +247,13 @@ public class formActivity extends AppCompatActivity {
         if(requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
                 startCamera();
+            }
+        }
+
+        if(requestCode == 555){
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                helperForm.disableSpeechButtons();
+                Toast.makeText(this, "No Speech-to-Text", Toast.LENGTH_SHORT).show();
             }
         }
     }

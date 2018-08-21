@@ -1,4 +1,4 @@
-package com.dudukling.collector;
+package com.dudukling.collector.util;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.design.widget.TextInputLayout;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dudukling.collector.R;
+import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,13 +19,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 @SuppressLint("ValidFragment")
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class mapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
     private static formActivity activity;
     private static double[] latitude = {0};
     private static double[] longitude = {0};
 
-    public MapFragment(formActivity activity) {
+    public mapFragment(formActivity activity) {
         this.activity = activity;
     }
 
@@ -69,7 +71,4 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         }
     }
 
-    public static void updateMap() {
-        getGPSFromInput();
-    }
 }
