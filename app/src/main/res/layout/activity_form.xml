@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Collector Name"
                 android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz "
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
 
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Species"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
 
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Species Family"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
         </android.support.design.widget.TextInputLayout>
@@ -195,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Author"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
         </android.support.design.widget.TextInputLayout>
@@ -226,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Sample Description"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="3000"
                 android:maxLines="8"/>
         </android.support.design.widget.TextInputLayout>
@@ -257,7 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Ambient Description"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="3000"
                 android:maxLines="8"/>
         </android.support.design.widget.TextInputLayout>
@@ -288,7 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Notes"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="3000"
                 android:maxLines="8"/>
         </android.support.design.widget.TextInputLayout>

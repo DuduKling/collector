@@ -18,21 +18,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-@SuppressLint("ValidFragment")
 public class mapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
     private static formActivity activity;
     private static double[] latitude = {0};
     private static double[] longitude = {0};
 
-    public mapFragment(formActivity activity) {
-        this.activity = activity;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.activity = (formActivity) getActivity();
         getMapAsync(this);
     }
 

@@ -495,7 +495,6 @@ public class formHelper {
     }
 
     public static void setGPSValues(final formActivity activity) {
-        gpsButton.setBackgroundResource(R.drawable.ic_pause);
         fieldEditTextGPSLatitude.setFocusableInTouchMode(false);
         fieldEditTextGPSLatitude.setFocusable(false);
         fieldEditTextGPSLongitude.setFocusableInTouchMode(false);
@@ -503,10 +502,10 @@ public class formHelper {
 
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         final ProgressBar progressBar = activity.findViewById(R.id.progressBarGPS);
-        progressBar.setVisibility(View.VISIBLE);
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},111);
+            gpsButton.setBackgroundResource(R.drawable.ic_play);
             return;
         }else{
             final double[] longitude = {0};
@@ -514,6 +513,8 @@ public class formHelper {
             final double[] altitude = {0};
 
             activeGPS = true;
+            gpsButton.setBackgroundResource(R.drawable.ic_pause);
+            progressBar.setVisibility(View.VISIBLE);
 
             locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
@@ -614,12 +615,12 @@ public class formHelper {
         }
     }
 
-    private static void startMaps() {
+    public static void startMaps() {
         fixScrollForMaps();
 
         FragmentManager fragManager = activity.getSupportFragmentManager();
         FragmentTransaction tx = fragManager.beginTransaction();
-        tx.replace(R.id.mapFrame, new mapFragment(activity));
+        tx.replace(R.id.mapFrame, new mapFragment());
         tx.commit();
     }
 

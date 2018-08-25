@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,9 +54,9 @@ public class formActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSION_CODE = 333;
     public static final int ALBUM_RESULT_CODE = 444;
 
+    private Sample sample;
     private formHelper helperForm;
     private String formType;
-    private Sample sample;
     public List<String> imagesList = new ArrayList<>();
     String photoPath;
     File photoFile = null;
@@ -239,19 +240,30 @@ public class formActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(requestCode == 111){
-            if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_DENIED) {
                 formHelper.setGPSValues(formActivity.this);
+
+                // A permissão do GPS é chamada antes, e a do microfone acaba não sendo chamado. Por isso, é chamado aqui:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},555);
+                }
+            }else{
+                Toast.makeText(this, "No GPS", Toast.LENGTH_SHORT).show();
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},555);
+                }
             }
         }
 
         if(requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_DENIED) {
                 startCamera();
             }
         }
 
         if(requestCode == 555){
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 helperForm.disableSpeechButtons();
                 Toast.makeText(this, "No Speech-to-Text", Toast.LENGTH_SHORT).show();
             }
@@ -278,6 +290,8 @@ public class formActivity extends AppCompatActivity {
         photoFile = (File) savedInstanceState.getSerializable("photoFile");
         imagesList = (List<String>) savedInstanceState.getSerializable("imagesList");
         helperForm.fillForm(sampleSaved);
+
+        helperForm.startMaps();
 
     }
 
