@@ -133,10 +133,10 @@ public class formHelper {
         }
 
         if (formType.equals("new")) {
-            sampleID = 0;
+            sampleID = (getLastID(activity) + 1);
 
             fieldDateForm.setText("Date: " + todayDate());
-            fieldIDForm.setText("ID: #" + (getLastID(activity) + 1));
+            fieldIDForm.setText("ID: #" + sampleID);
 
             cameraButton.setVisibility(View.VISIBLE);
 
@@ -441,10 +441,12 @@ public class formHelper {
         sample.setAmbientDescription(fieldAmbientDescription.getText().toString());
         sample.setNotes(fieldNotes.getText().toString());
 
-        sample.setGPSLatitude(fieldEditTextGPSLatitude.getText().toString());
-        sample.setGPSLongitude(fieldEditTextGPSLongitude.getText().toString());
-        sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
+        String latitude = fieldEditTextGPSLatitude.getText().toString();
+        String longitude = fieldEditTextGPSLongitude.getText().toString();
 
+        sample.setGPSLatitude(latitude);
+        sample.setGPSLongitude(longitude);
+        sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
         sampleDAO dao = new sampleDAO(activity);
         List<String> imagesListDB = dao.getImagesDB(sample.getId());

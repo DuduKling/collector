@@ -3,6 +3,7 @@ package com.dudukling.collector;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +107,7 @@ public class collectionActivity extends AppCompatActivity {
             exportDir.mkdirs();
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("ddMMyyyy-HHmmss").format(new Date());
         File file = new File(exportDir, "CollectionExport_"+timeStamp+".csv");
 
         try{
@@ -114,7 +116,20 @@ public class collectionActivity extends AppCompatActivity {
 
             SQLiteDatabase db = dao.getReadableDatabase();
             Cursor curCSV = db.rawQuery("SELECT * FROM Collection",null);
-            csvWrite.writeNext(curCSV.getColumnNames());
+
+            String[] LatLong = {"LatDeg", "LatMin", "LatSec", "LatHem", "LongDeg", "LongMin", "LongSec", "LongHem"};
+            String[] fromDB = curCSV.getColumnNames();
+
+            String[] str = new String[fromDB.length + LatLong.length];
+            for(int i=0; i<=(fromDB.length+LatLong.length-1); i++){
+                if(i<=(fromDB.length-1)){
+                    str[i] = fromDB[i];
+                }else{
+                    str[i] = LatLong[i-fromDB.length];
+                }
+            }
+            
+            csvWrite.writeNext(str);
 
             while(curCSV.moveToNext()){
                 //Which column you want to export
@@ -127,8 +142,8 @@ public class collectionActivity extends AppCompatActivity {
                 String s6 = curCSV.getString(6);
                 String s7 = curCSV.getString(7);
                 String s8 = curCSV.getString(8);
-                String s9 = curCSV.getString(9);
-                String s10 = curCSV.getString(10);
+                String latitude = curCSV.getString(9);
+                String longitude = curCSV.getString(10);
                 String s11 = curCSV.getString(11);
 
                 s0 = stripAccents(s0);
@@ -140,11 +155,32 @@ public class collectionActivity extends AppCompatActivity {
                 s6 = stripAccents(s6);
                 s7 = stripAccents(s7);
                 s8 = stripAccents(s8);
-                s9 = stripAccents(s9);
-                s10 = stripAccents(s10);
+                latitude = stripAccents(latitude);
+                longitude = stripAccents(longitude);
                 s11 = stripAccents(s11);
 
-                String arrStr[] ={s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11};
+
+                String LatHemisphere;
+                String LongHemisphere;
+
+                if (Double.parseDouble(latitude) < 0) {
+                    LatHemisphere = "S";
+                } else {
+                    LatHemisphere = "N";
+                }
+
+                if (Double.parseDouble(longitude) < 0) {
+                    LongHemisphere = "W";
+                } else {
+                    LongHemisphere = "E";
+                }
+
+                String latitudeDegrees = Location.convert(Math.abs(Double.parseDouble(latitude)), Location.FORMAT_SECONDS);
+                String[] latitudeSplit = latitudeDegrees.split(":");
+                String longitudeDegrees = Location.convert(Math.abs(Double.parseDouble(longitude)), Location.FORMAT_SECONDS);
+                String[] longitudeSplit = longitudeDegrees.split(":");
+
+                String arrStr[] ={s0, s1, s2, s3, s4, s5, s6, s7, s8, latitude, longitude, s11, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere};
 
                 csvWrite.writeNext(arrStr);
             }

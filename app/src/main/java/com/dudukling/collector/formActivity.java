@@ -291,7 +291,7 @@ public class formActivity extends AppCompatActivity {
         imagesList = (List<String>) savedInstanceState.getSerializable("imagesList");
         helperForm.fillForm(sampleSaved);
 
-        helperForm.startMaps();
+        //helperForm.startMaps();
 
     }
 
