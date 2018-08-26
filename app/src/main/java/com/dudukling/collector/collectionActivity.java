@@ -115,72 +115,44 @@ public class collectionActivity extends AppCompatActivity {
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
             SQLiteDatabase db = dao.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT * FROM Collection",null);
+            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, sampleDescription, ambientDescription, notes, latitude, longitude, altitude FROM Collection",null);
 
-            String[] LatLong = {"LatDeg", "LatMin", "LatSec", "LatHem", "LongDeg", "LongMin", "LongSec", "LongHem"};
-            String[] fromDB = curCSV.getColumnNames();
+            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude"};
 
-            String[] str = new String[fromDB.length + LatLong.length];
-            for(int i=0; i<=(fromDB.length+LatLong.length-1); i++){
-                if(i<=(fromDB.length-1)){
-                    str[i] = fromDB[i];
-                }else{
-                    str[i] = LatLong[i-fromDB.length];
-                }
-            }
-            
             csvWrite.writeNext(str);
 
             while(curCSV.moveToNext()){
-                //Which column you want to export
-                String s0 = curCSV.getString(0);
-                String s1 = curCSV.getString(1);
-                String s2 = curCSV.getString(2);
-                String s3 = curCSV.getString(3);
-                String s4 = curCSV.getString(4);
-                String s5 = curCSV.getString(5);
-                String s6 = curCSV.getString(6);
-                String s7 = curCSV.getString(7);
-                String s8 = curCSV.getString(8);
+                // Column you want get from DB:
+                String id = curCSV.getString(0);
+                String date = curCSV.getString(1);
+                String collectorName = stripAccents(curCSV.getString(2));
+                String species = stripAccents(curCSV.getString(3));
+                String speciesFamily = stripAccents(curCSV.getString(4));
+                String author = stripAccents(curCSV.getString(5));
+                String sampleDescription = stripAccents(curCSV.getString(6));
+                String ambientDescription = stripAccents(curCSV.getString(7));
+                String notes = stripAccents(curCSV.getString(8));
                 String latitude = curCSV.getString(9);
                 String longitude = curCSV.getString(10);
-                String s11 = curCSV.getString(11);
+                String altitude = curCSV.getString(11);
 
-                s0 = stripAccents(s0);
-                s1 = stripAccents(s1);
-                s2 = stripAccents(s2);
-                s3 = stripAccents(s3);
-                s4 = stripAccents(s4);
-                s5 = stripAccents(s5);
-                s6 = stripAccents(s6);
-                s7 = stripAccents(s7);
-                s8 = stripAccents(s8);
-                latitude = stripAccents(latitude);
-                longitude = stripAccents(longitude);
-                s11 = stripAccents(s11);
-
-
+                // Fix GPS:
                 String LatHemisphere;
                 String LongHemisphere;
-
-                if (Double.parseDouble(latitude) < 0) {
-                    LatHemisphere = "S";
-                } else {
-                    LatHemisphere = "N";
-                }
-
-                if (Double.parseDouble(longitude) < 0) {
-                    LongHemisphere = "W";
-                } else {
-                    LongHemisphere = "E";
-                }
-
+                if (Double.parseDouble(latitude) < 0){LatHemisphere = "S";
+                }else{LatHemisphere = "N";}
+                if (Double.parseDouble(longitude) < 0){LongHemisphere = "W";
+                }else{LongHemisphere = "E";}
                 String latitudeDegrees = Location.convert(Math.abs(Double.parseDouble(latitude)), Location.FORMAT_SECONDS);
                 String[] latitudeSplit = latitudeDegrees.split(":");
                 String longitudeDegrees = Location.convert(Math.abs(Double.parseDouble(longitude)), Location.FORMAT_SECONDS);
                 String[] longitudeSplit = longitudeDegrees.split(":");
 
-                String arrStr[] ={s0, s1, s2, s3, s4, s5, s6, s7, s8, latitude, longitude, s11, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere};
+                // Fix Date:
+                String[] dateSplit = date.split("/");
+
+
+                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude};
 
                 csvWrite.writeNext(arrStr);
             }
