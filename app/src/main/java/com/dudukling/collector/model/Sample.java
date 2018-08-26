@@ -20,15 +20,11 @@ public class Sample implements Serializable {
     private String GPSLongitude;
     private String GPSAltitude;
 
+    private String hasFlower;
+    private String hasFruit;
+
     private List<String> imagesList  = new ArrayList<String>();
-    private String GPSLatitudeHem;
-    private String GPSLatitudeDeg;
-    private String GPSLatitudeMin;
-    private String GPSLatitudeSec;
-    private String GPSLongitudeHem;
-    private String GPSLongitudeDeg;
-    private String GPSLongitudeMin;
-    private String GPSLongitudeSec;
+
 
 
     public int getId() {
@@ -135,67 +131,19 @@ public class Sample implements Serializable {
         this.imagesList = imagesList;
     }
 
-    public void setGPSLatitudeHem(String GPSLatitudeHem) {
-        this.GPSLatitudeHem = GPSLatitudeHem;
+    public String getHasFlower() {
+        return hasFlower;
     }
 
-    public void setGPSLatitudeDeg(String GPSLatitudeDeg) {
-        this.GPSLatitudeDeg = GPSLatitudeDeg;
+    public void setHasFlower(String hasFlower) {
+        this.hasFlower = hasFlower;
     }
 
-    public void setGPSLatitudeMin(String GPSLatitudeMin) {
-        this.GPSLatitudeMin = GPSLatitudeMin;
+    public String getHasFruit() {
+        return hasFruit;
     }
 
-    public void setGPSLatitudeSec(String GPSLatitudeSec) {
-        this.GPSLatitudeSec = GPSLatitudeSec;
-    }
-
-    public void setGPSLongitudeHem(String GPSLongitudeHem) {
-        this.GPSLongitudeHem = GPSLongitudeHem;
-    }
-
-    public void setGPSLongitudeDeg(String GPSLongitudeDeg) {
-        this.GPSLongitudeDeg = GPSLongitudeDeg;
-    }
-
-    public void setGPSLongitudeMin(String GPSLongitudeMin) {
-        this.GPSLongitudeMin = GPSLongitudeMin;
-    }
-
-    public void setGPSLongitudeSec(String GPSLongitudeSec) {
-        this.GPSLongitudeSec = GPSLongitudeSec;
-    }
-
-    public String getGPSLatitudeHem() {
-        return GPSLatitudeHem;
-    }
-
-    public String getGPSLatitudeDeg() {
-        return GPSLatitudeDeg;
-    }
-
-    public String getGPSLatitudeMin() {
-        return GPSLatitudeMin;
-    }
-
-    public String getGPSLatitudeSec() {
-        return GPSLatitudeSec;
-    }
-
-    public String getGPSLongitudeHem() {
-        return GPSLongitudeHem;
-    }
-
-    public String getGPSLongitudeDeg() {
-        return GPSLongitudeDeg;
-    }
-
-    public String getGPSLongitudeMin() {
-        return GPSLongitudeMin;
-    }
-
-    public String getGPSLongitudeSec() {
-        return GPSLongitudeSec;
+    public void setHasFruit(String hasFruit) {
+        this.hasFruit = hasFruit;
     }
 }

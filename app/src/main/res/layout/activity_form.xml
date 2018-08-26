@@ -81,7 +81,6 @@
 
 
         <!-- FIELDS -->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextCollectorName"
             android:layout_width="0dp"
@@ -97,13 +96,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Collector Name"
-                android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz "
                 android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
-
-            <!--android:textColor="#0000ff" />-->
-
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -135,7 +130,6 @@
                 android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
-
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -304,9 +298,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextNotes" />
 
+        <CheckBox
+            android:id="@+id/checkBoxFlower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Flower"
+            app:layout_constraintEnd_toStartOf="@+id/checkBoxFruit"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNotes" />
+
+        <CheckBox
+            android:id="@+id/checkBoxFruit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Fruit"
+            app:layout_constraintBottom_toTopOf="@+id/checkBoxFlower"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxFlower"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxFlower" />
+
 
         <!-- GPS -->
-
         <ImageView
             android:id="@+id/bg_gps_form"
             android:layout_width="0dp"
@@ -317,7 +333,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNotes"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxFlower"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -408,6 +424,8 @@
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
+
+        <!-- MAPS -->
         <RelativeLayout
             android:id="@+id/map_layout"
             android:layout_width="0dp"
@@ -435,6 +453,8 @@
 
         </RelativeLayout>
 
+
+        <!-- LOADINGS -->
         <ProgressBar
             android:id="@+id/progressBarColectorName"
             style="?android:attr/progressBarStyleHorizontal"

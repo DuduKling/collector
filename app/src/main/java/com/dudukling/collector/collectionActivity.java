@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudukling.collector.dao.sampleDAO;
@@ -65,6 +66,11 @@ public class collectionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadRecycler();
+
+        sampleDAO dao = new sampleDAO(this);
+        TextView textViewNoRecord = findViewById(R.id.textViewNoRecord);
+        if(dao.lastID()==0){textViewNoRecord.setVisibility(View.VISIBLE);}
+        dao.close();
     }
 
     @Override
@@ -115,9 +121,9 @@ public class collectionActivity extends AppCompatActivity {
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
             SQLiteDatabase db = dao.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, sampleDescription, ambientDescription, notes, latitude, longitude, altitude FROM Collection",null);
+            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitude, longitude, altitude, hasFlower, hasFruit FROM Collection",null);
 
-            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude"};
+            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude", "Flower", "Fruit"};
 
             csvWrite.writeNext(str);
 
@@ -135,6 +141,8 @@ public class collectionActivity extends AppCompatActivity {
                 String latitude = curCSV.getString(9);
                 String longitude = curCSV.getString(10);
                 String altitude = curCSV.getString(11);
+                String flower = curCSV.getString(12);
+                String fruit = curCSV.getString(13);
 
                 // Fix GPS:
                 String LatHemisphere;
@@ -152,7 +160,7 @@ public class collectionActivity extends AppCompatActivity {
                 String[] dateSplit = date.split("/");
 
 
-                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude};
+                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude, flower, fruit};
 
                 csvWrite.writeNext(arrStr);
             }

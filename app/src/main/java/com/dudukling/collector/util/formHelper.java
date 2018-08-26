@@ -25,6 +25,7 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -53,6 +54,8 @@ public class formHelper {
     private static boolean activeGPS;
     private final ImageView imageViewSample;
     private static formActivity activity;
+    private final CheckBox checkBoxFlower;
+    private final CheckBox checkBoxFruit;
 
     private int sampleID;
     private static Button gpsButton;
@@ -95,6 +98,9 @@ public class formHelper {
         FloatingActionButton albumButton = activity.findViewById(R.id.buttonAlbum);
         gpsButton = activity.findViewById(R.id.buttonGPS);
 
+        checkBoxFlower = activity.findViewById(R.id.checkBoxFlower);
+        checkBoxFruit = activity.findViewById(R.id.checkBoxFruit);
+
         imageViewSample = activity.findViewById(R.id.imageViewSampleForm);
 
         setFields(activity);
@@ -117,6 +123,9 @@ public class formHelper {
             disableEditText(fieldEditTextGPSLatitude);
             disableEditText(fieldEditTextGPSLongitude);
             disableEditText(fieldEditTextGPSAltitude);
+
+            disableCheckBox(checkBoxFlower);
+            disableCheckBox(checkBoxFruit);
 
             sampleID = sample.getId();
 
@@ -448,6 +457,9 @@ public class formHelper {
         sample.setGPSLongitude(longitude);
         sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
+        if(checkBoxFlower.isChecked()){sample.setHasFlower("x");}else{sample.setHasFlower("");}
+        if(checkBoxFruit.isChecked()){sample.setHasFruit("x");}else{sample.setHasFruit("");}
+
         sampleDAO dao = new sampleDAO(activity);
         List<String> imagesListDB = dao.getImagesDB(sample.getId());
 
@@ -478,6 +490,9 @@ public class formHelper {
         fieldEditTextGPSLongitude.setText(sample.getGPSLongitude());
         fieldEditTextGPSAltitude.setText(sample.getGPSAltitude());
 
+        if(sample.getHasFlower()!=null){if(sample.getHasFlower().equals("x")){checkBoxFlower.setChecked(true);}}
+        if(sample.getHasFruit()!=null){if(sample.getHasFruit().equals("x")){checkBoxFruit.setChecked(true);}}
+
         List<String> images = sample.getImagesList();
         if(images.size() > 0) {
             Bitmap bitmap = BitmapFactory.decodeFile(images.get(0));
@@ -494,6 +509,10 @@ public class formHelper {
         editText.setKeyListener(null);
         //editText.setBackgroundColor(Color.TRANSPARENT);
         editText.setTextColor(Color.parseColor("#616161"));
+    }
+
+    private void disableCheckBox(CheckBox checkBox) {
+        checkBox.setEnabled(false);
     }
 
     public static void setGPSValues(final formActivity activity) {

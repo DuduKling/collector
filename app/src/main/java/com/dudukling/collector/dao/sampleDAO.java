@@ -32,7 +32,9 @@ public class sampleDAO extends SQLiteOpenHelper {
                 " notes TEXT NOT NULL," +
                 " latitude TEXT NOT NULL," +
                 " longitude TEXT NOT NULL," +
-                " altitude TEXT NOT NULL" +
+                " altitude TEXT NOT NULL," +
+                " hasFlower TEXT NOT NULL," +
+                " hasFruit TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
 
@@ -92,6 +94,9 @@ public class sampleDAO extends SQLiteOpenHelper {
         queryData.put("longitude", sample.getGPSLongitude());
         queryData.put("altitude", sample.getGPSAltitude());
 
+        queryData.put("hasFlower", sample.getHasFlower());
+        queryData.put("hasFruit", sample.getHasFruit());
+
         return queryData;
     }
 
@@ -121,6 +126,9 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setGPSLatitude(c.getString(c.getColumnIndex("latitude")));
             sample.setGPSLongitude(c.getString(c.getColumnIndex("longitude")));
             sample.setGPSAltitude(c.getString(c.getColumnIndex("altitude")));
+
+            sample.setHasFlower(c.getString(c.getColumnIndex("hasFlower")));
+            sample.setHasFruit(c.getString(c.getColumnIndex("hasFruit")));
 
 
             // Pegando imagens
