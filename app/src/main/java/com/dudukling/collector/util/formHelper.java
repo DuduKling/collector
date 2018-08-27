@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -39,6 +41,7 @@ import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +76,13 @@ public class formHelper {
     private TextInputLayout editTextGPSLatitude;
     private TextInputLayout editTextGPSLongitude;
     private TextInputLayout editTextGPSAltitude;
+    private TextInputLayout editTextGeoCountry;
+    private TextInputLayout editTextGeoState;
+    private TextInputLayout editGeoTextCity;
+    private TextInputLayout editTextGeoNeighborhood;
+    private TextInputLayout editTextGeoOtherInfo;
+
+
 
     private EditText fieldSpecies;
     private EditText fieldCollectorName;
@@ -85,6 +95,12 @@ public class formHelper {
     private static EditText fieldEditTextGPSLatitude;
     private static EditText fieldEditTextGPSLongitude;
     private static EditText fieldEditTextGPSAltitude;
+    private EditText fieldEditTextGeoCountry;
+    private EditText fieldEditTextGeoState;
+    private EditText fieldEditTextGeoCity;
+    private EditText fieldEditTextGeoNeighborhood;
+    private EditText fieldEditTextGeoOtherInfo;
+
     private SpeechRecognizer mSpeechRecognizer;
     private Intent mSpeechRecognizerIntent;
 
@@ -123,6 +139,11 @@ public class formHelper {
             disableEditText(fieldEditTextGPSLatitude);
             disableEditText(fieldEditTextGPSLongitude);
             disableEditText(fieldEditTextGPSAltitude);
+            disableEditText(fieldEditTextGeoCountry);
+            disableEditText(fieldEditTextGeoState);
+            disableEditText(fieldEditTextGeoCity);
+            disableEditText(fieldEditTextGeoNeighborhood);
+            disableEditText(fieldEditTextGeoOtherInfo);
 
             disableCheckBox(checkBoxFlower);
             disableCheckBox(checkBoxFruit);
@@ -244,6 +265,22 @@ public class formHelper {
         editTextGPSAltitude = activity.findViewById(R.id.editTextGPSAltitude);
         fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
         setValidateEmpty(editTextGPSAltitude);
+
+        editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
+        fieldEditTextGeoCountry = editTextGeoCountry.getEditText();
+
+        editTextGeoState = activity.findViewById(R.id.editTextGeoState);
+        fieldEditTextGeoState = editTextGeoState.getEditText();
+
+        editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
+        fieldEditTextGeoCity = editGeoTextCity.getEditText();
+
+        editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
+        fieldEditTextGeoNeighborhood = editTextGeoNeighborhood.getEditText();
+
+        editTextGeoOtherInfo = activity.findViewById(R.id.editTextGeoOtherInfo);
+        fieldEditTextGeoOtherInfo = editTextGeoOtherInfo.getEditText();
+
     }
 
     private void setSpeechButtons(formActivity activity) {
@@ -457,6 +494,12 @@ public class formHelper {
         sample.setGPSLongitude(longitude);
         sample.setGPSAltitude(fieldEditTextGPSAltitude.getText().toString());
 
+        sample.setGeoCountry(fieldEditTextGeoCountry.getText().toString());
+        sample.setGeoState(fieldEditTextGeoState.getText().toString());
+        sample.setGeoCity(fieldEditTextGeoCity.getText().toString());
+        sample.setGeoNeighborhood(fieldEditTextGeoNeighborhood.getText().toString());
+        sample.setGeoOtherInfo(fieldEditTextGeoOtherInfo.getText().toString());
+
         if(checkBoxFlower.isChecked()){sample.setHasFlower("x");}else{sample.setHasFlower("");}
         if(checkBoxFruit.isChecked()){sample.setHasFruit("x");}else{sample.setHasFruit("");}
 
@@ -489,6 +532,12 @@ public class formHelper {
         fieldEditTextGPSLatitude.setText(sample.getGPSLatitude());
         fieldEditTextGPSLongitude.setText(sample.getGPSLongitude());
         fieldEditTextGPSAltitude.setText(sample.getGPSAltitude());
+
+        fieldEditTextGeoCountry.setText(sample.getGeoCountry());
+        fieldEditTextGeoState.setText(sample.getGeoState());
+        fieldEditTextGeoCity.setText(sample.getGeoCity());
+        fieldEditTextGeoNeighborhood.setText(sample.getGeoNeighborhood());
+        fieldEditTextGeoOtherInfo.setText(sample.getGeoOtherInfo());
 
         if(sample.getHasFlower()!=null){if(sample.getHasFlower().equals("x")){checkBoxFlower.setChecked(true);}}
         if(sample.getHasFruit()!=null){if(sample.getHasFruit().equals("x")){checkBoxFruit.setChecked(true);}}
@@ -549,6 +598,13 @@ public class formHelper {
                         fieldEditTextGPSLatitude.setText("" + latitude[0], TextView.BufferType.EDITABLE);
                         fieldEditTextGPSLongitude.setText("" + longitude[0], TextView.BufferType.EDITABLE);
                         fieldEditTextGPSAltitude.setText("" + altitude[0], TextView.BufferType.EDITABLE);
+
+                        try {
+                            getCurrentPlace(latitude[0], longitude[0]);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(activity, "Couldn't find this location address..", Toast.LENGTH_SHORT).show();
+                        }
 
                         startMaps();
                     }
@@ -625,6 +681,46 @@ public class formHelper {
             activeGPS = false;
             locationManager.removeUpdates(locationListener);
         }
+    }
+
+    private static void getCurrentPlace(double latitude, double longitude) throws IOException {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(activity, Locale.getDefault());
+
+        addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+        //String address = addresses.get(0).getAddressLine(0);
+        String street = addresses.get(0).getThoroughfare();
+        String neighborhood = addresses.get(0).getSubLocality();
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        //String postalCode = addresses.get(0).getPostalCode();
+        //String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+        //TextView textViewTestMapInfo = activity.findViewById(R.id.textViewTestMapInfo);
+        //textViewTestMapInfo.setText("Endereço: "+address+" | Cidade: "+city+" | Estado: "+ state+ " | País: "+country+" | CEP: "+postalCode+" | Outro: "+knownName);
+
+        TextInputLayout textInputCountry = activity.findViewById(R.id.editTextGeoCountry);
+        EditText editTextCountry = textInputCountry.getEditText();
+        TextInputLayout textInputState = activity.findViewById(R.id.editTextGeoState);
+        EditText editTextState = textInputState.getEditText();
+        TextInputLayout textInputCity = activity.findViewById(R.id.editTextGeoCity);
+        EditText editTextCity = textInputCity.getEditText();
+        TextInputLayout textInputNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
+        EditText editTextNeighborhood = textInputNeighborhood.getEditText();
+        //TextInputLayout textInputStreet = activity.findViewById(R.id.editTextGeoStreet);
+        //EditText editTextStreet = textInputStreet.getEditText();
+        //TextInputLayout textInputNumber = activity.findViewById(R.id.editTextGeoNumber);
+        //EditText editTextNumber = textInputNumber.getEditText();
+
+        editTextCountry.setText(country);
+        editTextState.setText(state);
+        editTextCity.setText(city);
+        editTextNeighborhood.setText(neighborhood);
+        //editTextStreet.setText(street);
+        //editTextNumber.setText(knownName);
     }
 
     public static void deleteImagesFromPhoneMemory(Sample sample) {

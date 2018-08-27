@@ -1,5 +1,6 @@
 package com.dudukling.collector;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,20 +12,17 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 import com.dudukling.collector.util.CSVWriter;
-import com.dudukling.collector.util.formHelper;
 import com.dudukling.collector.util.recyclerAdapter;
 
 import java.io.File;
@@ -66,10 +64,14 @@ public class collectionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadRecycler();
+        checkRecords();
+    }
 
+    public void checkRecords() {
         sampleDAO dao = new sampleDAO(this);
-        TextView textViewNoRecord = findViewById(R.id.textViewNoRecord);
-        if(dao.lastID()==0){textViewNoRecord.setVisibility(View.VISIBLE);}
+        TextView textViewNoRecord = this.findViewById(R.id.textViewNoRecord);
+        if (dao.lastID() == 0) {textViewNoRecord.setVisibility(View.VISIBLE);
+        }else{textViewNoRecord.setVisibility(View.GONE);}
         dao.close();
     }
 

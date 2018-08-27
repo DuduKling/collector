@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudukling.collector.R;
+import com.dudukling.collector.collectionActivity;
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
@@ -129,6 +130,8 @@ public class recyclerAdapter extends RecyclerView.Adapter {
                     dao.close();
 
                     notifyDataSetChanged();
+
+                    //collectionActivity.checkRecords();
 
                     return false;
                 }

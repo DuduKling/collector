@@ -20,6 +20,14 @@ public class Sample implements Serializable {
     private String GPSLongitude;
     private String GPSAltitude;
 
+    private String GeoCountry;
+    private String GeoState;
+    private String GeoCity;
+    private String GeoNeighborhood;
+    //private String GeoStreet;
+    //private String GeoNumber;
+    private String GeoOtherInfo;
+
     private String hasFlower;
     private String hasFruit;
 
@@ -145,5 +153,45 @@ public class Sample implements Serializable {
 
     public void setHasFruit(String hasFruit) {
         this.hasFruit = hasFruit;
+    }
+
+    public String getGeoCountry() {
+        return GeoCountry;
+    }
+
+    public void setGeoCountry(String geoCountry) {
+        GeoCountry = geoCountry;
+    }
+
+    public String getGeoState() {
+        return GeoState;
+    }
+
+    public void setGeoState(String geoState) {
+        GeoState = geoState;
+    }
+
+    public String getGeoCity() {
+        return GeoCity;
+    }
+
+    public void setGeoCity(String geoCity) {
+        GeoCity = geoCity;
+    }
+
+    public String getGeoNeighborhood() {
+        return GeoNeighborhood;
+    }
+
+    public void setGeoNeighborhood(String geoNeighborhood) {
+        GeoNeighborhood = geoNeighborhood;
+    }
+
+    public String getGeoOtherInfo() {
+        return GeoOtherInfo;
+    }
+
+    public void setGeoOtherInfo(String geoOtherInfo) {
+        GeoOtherInfo = geoOtherInfo;
     }
 }

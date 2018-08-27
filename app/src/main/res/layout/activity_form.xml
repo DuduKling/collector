@@ -98,7 +98,7 @@
                 android:hint="Collector Name"
                 android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
-                android:maxLines="4"/>
+                android:maxLines="4" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -430,20 +430,18 @@
             android:id="@+id/map_layout"
             android:layout_width="0dp"
             android:layout_height="300dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextGPSAltitude"
-            app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
-            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm">
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@id/editTextGPSAltitude">
 
             <FrameLayout
                 android:id="@+id/mapFrame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/transparent_image"
@@ -452,6 +450,134 @@
                 android:background="@android:color/transparent" />
 
         </RelativeLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextGeoCountry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/map_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Country"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextGeoState"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGeoCountry">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="State"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextGeoCity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGeoState">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextGeoNeighborhood"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGeoCity">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Neighborhood"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/editTextGeoStreet"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoNeighborhood">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Street"-->
+                <!--android:inputType="textPersonName" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/editTextGeoNumber"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoStreet">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Number"-->
+                <!--android:inputType="textPersonName" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextGeoOtherInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGeoNeighborhood"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Other Locale Info"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewTestMapInfo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginBottom="40dp"-->
+            <!--android:text="..."-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoOtherInfo" />-->
 
 
         <!-- LOADINGS -->

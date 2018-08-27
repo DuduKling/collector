@@ -34,7 +34,12 @@ public class sampleDAO extends SQLiteOpenHelper {
                 " longitude TEXT NOT NULL," +
                 " altitude TEXT NOT NULL," +
                 " hasFlower TEXT NOT NULL," +
-                " hasFruit TEXT NOT NULL" +
+                " hasFruit TEXT NOT NULL," +
+                " country TEXT NOT NULL," +
+                " state TEXT NOT NULL," +
+                " city TEXT NOT NULL," +
+                " neighborhood TEXT NOT NULL," +
+                " otherInfo TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
 
@@ -97,6 +102,12 @@ public class sampleDAO extends SQLiteOpenHelper {
         queryData.put("hasFlower", sample.getHasFlower());
         queryData.put("hasFruit", sample.getHasFruit());
 
+        queryData.put("country", sample.getGeoCountry());
+        queryData.put("state", sample.getGeoState());
+        queryData.put("city", sample.getGeoCity());
+        queryData.put("neighborhood", sample.getGeoNeighborhood());
+        queryData.put("otherInfo", sample.getGeoOtherInfo());
+
         return queryData;
     }
 
@@ -130,6 +141,11 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setHasFlower(c.getString(c.getColumnIndex("hasFlower")));
             sample.setHasFruit(c.getString(c.getColumnIndex("hasFruit")));
 
+            sample.setGeoCountry(c.getString(c.getColumnIndex("country")));
+            sample.setGeoState(c.getString(c.getColumnIndex("state")));
+            sample.setGeoCity(c.getString(c.getColumnIndex("city")));
+            sample.setGeoNeighborhood(c.getString(c.getColumnIndex("neighborhood")));
+            sample.setGeoOtherInfo(c.getString(c.getColumnIndex("otherInfo")));
 
             // Pegando imagens
             List<String> imagesList = getImagesDB(dbSampleID);
