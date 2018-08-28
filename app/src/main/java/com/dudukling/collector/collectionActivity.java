@@ -63,7 +63,6 @@ public class collectionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadRecycler();
         checkRecords();
     }
 
@@ -71,9 +70,13 @@ public class collectionActivity extends AppCompatActivity {
         sampleDAO dao = new sampleDAO(this);
         TextView textViewNoRecord = this.findViewById(R.id.textViewNoRecord);
         if (dao.lastID() == 0) {textViewNoRecord.setVisibility(View.VISIBLE);
-        }else{textViewNoRecord.setVisibility(View.GONE);}
+        }else{
+            textViewNoRecord.setVisibility(View.GONE);
+            loadRecycler();
+        }
         dao.close();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,9 +126,9 @@ public class collectionActivity extends AppCompatActivity {
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
             SQLiteDatabase db = dao.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitude, longitude, altitude, hasFlower, hasFruit FROM Collection",null);
+            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitude, longitude, altitude, hasFlower, hasFruit, country, state, city, neighborhood, otherInfo FROM Collection",null);
 
-            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude", "Flower", "Fruit"};
+            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude", "Flower", "Fruit", "country", "majorarea", "minorarea", "Bairro", "Outras Info do Local"};
 
             csvWrite.writeNext(str);
 
@@ -145,6 +148,11 @@ public class collectionActivity extends AppCompatActivity {
                 String altitude = curCSV.getString(11);
                 String flower = curCSV.getString(12);
                 String fruit = curCSV.getString(13);
+                String country = stripAccents(curCSV.getString(14));
+                String state = stripAccents(curCSV.getString(15));
+                String city = stripAccents(curCSV.getString(16));
+                String neighborhood = stripAccents(curCSV.getString(17));
+                String otherInfo = stripAccents(curCSV.getString(18));
 
                 // Fix GPS:
                 String LatHemisphere;
@@ -162,7 +170,7 @@ public class collectionActivity extends AppCompatActivity {
                 String[] dateSplit = date.split("/");
 
 
-                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude, flower, fruit};
+                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude, flower, fruit, country, state, city, neighborhood, otherInfo};
 
                 csvWrite.writeNext(arrStr);
             }

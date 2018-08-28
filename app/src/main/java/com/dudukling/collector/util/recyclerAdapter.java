@@ -23,6 +23,7 @@ import com.dudukling.collector.model.Sample;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter {
+    private View holderView;
     private List<Sample> samples;
     private Context context;
 
@@ -74,6 +75,7 @@ public class recyclerAdapter extends RecyclerView.Adapter {
 
         aViewHolder(View view) {
             super(view);
+            holderView = view;
             viewId = view.findViewById(R.id.textViewId);
             viewSpecies = view.findViewById(R.id.textViewSpecies);
             viewDate = view.findViewById(R.id.textViewDate);
@@ -130,8 +132,6 @@ public class recyclerAdapter extends RecyclerView.Adapter {
                     dao.close();
 
                     notifyDataSetChanged();
-
-                    //collectionActivity.checkRecords();
 
                     return false;
                 }
