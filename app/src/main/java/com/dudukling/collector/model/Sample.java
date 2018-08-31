@@ -31,7 +31,7 @@ public class Sample implements Serializable {
     private String hasFlower;
     private String hasFruit;
 
-    private List<String> imagesList  = new ArrayList<String>();
+    private List<String> imagesList  = new ArrayList<>();
 
 
 

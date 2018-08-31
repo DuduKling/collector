@@ -1,5 +1,6 @@
 package com.dudukling.collector.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudukling.collector.R;
-import com.dudukling.collector.collectionActivity;
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
@@ -23,7 +23,6 @@ import com.dudukling.collector.model.Sample;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter {
-    private View holderView;
     private List<Sample> samples;
     private Context context;
 
@@ -36,11 +35,11 @@ public class recyclerAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.collection_item, parent, false);
-        aViewHolder holder = new aViewHolder(view);
 
-        return holder;
+        return new aViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         aViewHolder holder = (aViewHolder) viewHolder;
@@ -75,7 +74,6 @@ public class recyclerAdapter extends RecyclerView.Adapter {
 
         aViewHolder(View view) {
             super(view);
-            holderView = view;
             viewId = view.findViewById(R.id.textViewId);
             viewSpecies = view.findViewById(R.id.textViewSpecies);
             viewDate = view.findViewById(R.id.textViewDate);

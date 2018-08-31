@@ -1,18 +1,17 @@
 package com.dudukling.collector;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 import com.dudukling.collector.util.recyclerAlbumAdapter;
+
+import java.util.Objects;
 
 
 public class albumActivity extends AppCompatActivity {
@@ -26,7 +25,9 @@ public class albumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         recyclerView = findViewById(R.id.album_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        }
 
 
         Intent intent = getIntent();
@@ -46,12 +47,6 @@ public class albumActivity extends AppCompatActivity {
         //String qtdImgsDB = dao.countImages(sampleID);
         //Toast.makeText(this, "QTD IMAGENS: " + sample.getImagesList().size() + "|" + qtdImgsDB, Toast.LENGTH_LONG).show();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//    }
 
     private void loadRecycler() {
         recyclerView.setAdapter(new recyclerAlbumAdapter(sample, type, this));

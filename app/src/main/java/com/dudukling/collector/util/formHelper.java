@@ -1,6 +1,7 @@
 package com.dudukling.collector.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class formHelper {
-    public static final String REQUIRED_FIELD_ERROR_MSG = "Required Field!";
+    private static final String REQUIRED_FIELD_ERROR_MSG = "Required Field!";
 
     private static LocationManager locationManager;
     private static LocationListener locationListener;
@@ -76,12 +78,6 @@ public class formHelper {
     private TextInputLayout editTextGPSLatitude;
     private TextInputLayout editTextGPSLongitude;
     private TextInputLayout editTextGPSAltitude;
-    private TextInputLayout editTextGeoCountry;
-    private TextInputLayout editTextGeoState;
-    private TextInputLayout editGeoTextCity;
-    private TextInputLayout editTextGeoNeighborhood;
-    private TextInputLayout editTextGeoOtherInfo;
-
 
 
     private EditText fieldSpecies;
@@ -106,7 +102,7 @@ public class formHelper {
 
 
     public formHelper(final formActivity activity, String formType, Sample sample) {
-        this.activity = activity;
+        formHelper.activity = activity;
 
         fieldIDForm = activity.findViewById(R.id.TextViewIDForm);
         fieldDateForm = activity.findViewById(R.id.TextViewDateForm);
@@ -124,6 +120,7 @@ public class formHelper {
         checkTypeOfForm(activity, formType, sample, cameraButton, albumButton);
     }
 
+    @SuppressLint("SetTextI18n")
     private void checkTypeOfForm(formActivity activity, String formType, Sample sample, FloatingActionButton cameraButton, FloatingActionButton albumButton) {
         cameraButton.setVisibility(View.GONE);
         albumButton.setVisibility(View.GONE);
@@ -266,19 +263,19 @@ public class formHelper {
         fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
         setValidateEmpty(editTextGPSAltitude);
 
-        editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
+        TextInputLayout editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
         fieldEditTextGeoCountry = editTextGeoCountry.getEditText();
 
-        editTextGeoState = activity.findViewById(R.id.editTextGeoState);
+        TextInputLayout editTextGeoState = activity.findViewById(R.id.editTextGeoState);
         fieldEditTextGeoState = editTextGeoState.getEditText();
 
-        editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
+        TextInputLayout editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
         fieldEditTextGeoCity = editGeoTextCity.getEditText();
 
-        editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
+        TextInputLayout editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
         fieldEditTextGeoNeighborhood = editTextGeoNeighborhood.getEditText();
 
-        editTextGeoOtherInfo = activity.findViewById(R.id.editTextGeoOtherInfo);
+        TextInputLayout editTextGeoOtherInfo = activity.findViewById(R.id.editTextGeoOtherInfo);
         fieldEditTextGeoOtherInfo = editTextGeoOtherInfo.getEditText();
 
     }
@@ -329,6 +326,7 @@ public class formHelper {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setSpeechRecognizerToButton(Button button, final EditText editText, final ProgressBar progressBar) {
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -395,6 +393,7 @@ public class formHelper {
 
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResults(Bundle bundle) {
                 //getting all the matches
@@ -469,7 +468,7 @@ public class formHelper {
 
     private String todayDate() {
         Date todayDate = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(todayDate);
     }
 
@@ -517,6 +516,7 @@ public class formHelper {
         return sample;
     }
 
+    @SuppressLint("SetTextI18n")
     public void fillForm(Sample sample) {
         fieldIDForm.setText("ID: #" + sample.getId());
         fieldDateForm.setText("Date: " + sample.getDate());
@@ -576,7 +576,6 @@ public class formHelper {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},111);
             gpsButton.setBackgroundResource(R.drawable.ic_play);
-            return;
         }else{
             final double[] longitude = {0};
             final double[] latitude = {0};
@@ -587,6 +586,7 @@ public class formHelper {
             progressBar.setVisibility(View.VISIBLE);
 
             locationListener = new LocationListener() {
+                @SuppressLint("SetTextI18n")
                 public void onLocationChanged(Location location) {
                     if(location != null) {
                         progressBar.setVisibility(View.INVISIBLE);
@@ -635,7 +635,7 @@ public class formHelper {
         }
     }
 
-    public static void toggleGPS(final formActivity activity) {
+    private static void toggleGPS(final formActivity activity) {
         final ProgressBar progressBar = activity.findViewById(R.id.progressBarGPS);
         gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -691,7 +691,7 @@ public class formHelper {
         addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
         //String address = addresses.get(0).getAddressLine(0);
-        String street = addresses.get(0).getThoroughfare();
+        //String street = addresses.get(0).getThoroughfare();
         String neighborhood = addresses.get(0).getSubLocality();
         String city = addresses.get(0).getLocality();
         String state = addresses.get(0).getAdminArea();
@@ -715,10 +715,18 @@ public class formHelper {
         //TextInputLayout textInputNumber = activity.findViewById(R.id.editTextGeoNumber);
         //EditText editTextNumber = textInputNumber.getEditText();
 
-        editTextCountry.setText(country);
-        editTextState.setText(state);
-        editTextCity.setText(city);
-        editTextNeighborhood.setText(neighborhood);
+        if (editTextCountry != null) {
+            editTextCountry.setText(country);
+        }
+        if (editTextState != null) {
+            editTextState.setText(state);
+        }
+        if (editTextCity != null) {
+            editTextCity.setText(city);
+        }
+        if (editTextNeighborhood != null) {
+            editTextNeighborhood.setText(neighborhood);
+        }
         //editTextStreet.setText(street);
         //editTextNumber.setText(knownName);
     }
@@ -728,11 +736,12 @@ public class formHelper {
         //Toast.makeText(formActivity.this, "Deletando "+imagesListToDelete.size()+"!", Toast.LENGTH_LONG).show();
         for(int i = 0; i < imagesListToDelete.size(); i++){
             File file = new File(imagesListToDelete.get(i));
-            file.delete();
+            boolean deleted = file.delete();
+            Log.d("TAG4", "delete() called: "+deleted);
         }
     }
 
-    public static void startMaps() {
+    private static void startMaps() {
         fixScrollForMaps();
 
         FragmentManager fragManager = activity.getSupportFragmentManager();
@@ -741,6 +750,7 @@ public class formHelper {
         tx.commit();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private static void fixScrollForMaps() {
         final ScrollView mainScrollView = activity.findViewById(R.id.main_scrollview);
         ImageView transparentImageView = activity.findViewById(R.id.transparent_image);
@@ -790,6 +800,7 @@ public class formHelper {
 
     private boolean fieldIsEmpty(TextInputLayout textInputCampo) {
         EditText campo = textInputCampo.getEditText();
+        assert campo != null;
         String text = campo.getText().toString();
         if(text.isEmpty()) {
             textInputCampo.setError(REQUIRED_FIELD_ERROR_MSG);
@@ -802,6 +813,7 @@ public class formHelper {
 
     private void setValidateEmpty(final TextInputLayout textInputCampo){
         final EditText campo = textInputCampo.getEditText();
+        assert campo != null;
         campo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

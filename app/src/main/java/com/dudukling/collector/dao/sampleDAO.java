@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 
-import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.util.ArrayList;
@@ -59,7 +57,7 @@ public class sampleDAO extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(Sample sample, formActivity formActivity) {
+    public void insert(Sample sample) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues queryData = getContentValues(sample);
@@ -81,7 +79,6 @@ public class sampleDAO extends SQLiteOpenHelper {
         //Toast.makeText(formActivity,""+images,Toast.LENGTH_LONG).show();
     }
 
-    @NonNull
     private ContentValues getContentValues(Sample sample) {
         ContentValues queryData = new ContentValues();
 
@@ -235,19 +232,4 @@ public class sampleDAO extends SQLiteOpenHelper {
         return imageID;
     }
 
-//    public String countImages(int id){
-//        SQLiteDatabase db = getReadableDatabase();
-//        String qtdImages = null;
-//
-//        String sql2 = "SELECT count(*) AS TOTAL FROM Images WHERE collectionID = ?";
-//        Cursor c2 = db.rawQuery(sql2, new String[]{String.valueOf(id)});
-//
-//        while (c2.moveToNext()) {
-//            qtdImages = c2.getString(c2.getColumnIndex("TOTAL"));
-//        }
-//        c2.close();
-//
-//
-//        return qtdImages;
-//    }
 }

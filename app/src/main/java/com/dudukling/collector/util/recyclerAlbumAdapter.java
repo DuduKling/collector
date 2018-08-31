@@ -11,16 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dudukling.collector.R;
 import com.dudukling.collector.albumActivity;
 import com.dudukling.collector.dao.sampleDAO;
-import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +38,8 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.album_item, parent, false);
-        albumViewHolder holder = new recyclerAlbumAdapter.albumViewHolder(view);
 
-        return holder;
+        return new albumViewHolder(view);
     }
 
     @Override
@@ -71,7 +65,7 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
     public class albumViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         private final ImageView imageViewAlbum;
 
-        public albumViewHolder(View view) {
+        albumViewHolder(View view) {
             super(view);
             imageViewAlbum = view.findViewById(R.id.imageViewAlbum);
 

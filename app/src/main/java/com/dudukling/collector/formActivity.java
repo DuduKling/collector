@@ -1,9 +1,9 @@
 package com.dudukling.collector;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,27 +15,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Toast;
-
 
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 import com.dudukling.collector.util.formHelper;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class formActivity extends AppCompatActivity {
 
@@ -65,7 +60,9 @@ public class formActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        }
 
         checkTypeOfForm();
     }
@@ -77,7 +74,7 @@ public class formActivity extends AppCompatActivity {
 
         if (formType.equals("new")) {setFormNew(); return;}
         if (formType.equals("edit")) {setFormEdit(); return;}
-        if (formType.equals("readOnly")) {setFormReadOnly(); return;}
+        if (formType.equals("readOnly")) {setFormReadOnly();}
     }
 
     private void setFormNew() {
@@ -157,7 +154,7 @@ public class formActivity extends AppCompatActivity {
     }
 
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("dd-MM-yyy_HH-mm-ss").format(new Date());
         String imageFileName = "Collector_" + timeStamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         //File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -199,7 +196,7 @@ public class formActivity extends AppCompatActivity {
 
                     if(sample == null){
                         //Toast.makeText(formActivity.this, "insert", Toast.LENGTH_SHORT).show();
-                        dao.insert(sampleSave, formActivity.this);
+                        dao.insert(sampleSave);
                     }else{
                         //Toast.makeText(formActivity.this, "edit: " + String.valueOf(sample.getId()), Toast.LENGTH_SHORT).show();
                         dao.edit(sampleSave);
@@ -333,7 +330,8 @@ public class formActivity extends AppCompatActivity {
 
     private void deleteTempFromPhoneMemory(String photoFilePath) {
         File file = new File(photoFilePath);
-        file.delete();
+        boolean deleted = file.delete();
+        Log.d("TAG3", "delete() called: "+deleted);
     }
 
     @Override

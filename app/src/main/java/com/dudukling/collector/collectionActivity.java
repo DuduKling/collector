@@ -1,6 +1,6 @@
 package com.dudukling.collector;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -115,14 +115,16 @@ public class collectionActivity extends AppCompatActivity {
 
         File exportDir = new File(Environment.getExternalStorageDirectory(), "");
         if (!exportDir.exists()){
-            exportDir.mkdirs();
+            boolean dirCreated = exportDir.mkdirs();
+            Log.d("TAG1", "exportDB() called: "+dirCreated);
         }
 
-        String timeStamp = new SimpleDateFormat("ddMMyyyy-HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
         File file = new File(exportDir, "CollectionExport_"+timeStamp+".csv");
 
         try{
-            file.createNewFile();
+            boolean fileCreated = file.createNewFile();
+            Log.d("TAG2", "createNewFile() called: "+fileCreated);
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
             SQLiteDatabase db = dao.getReadableDatabase();
