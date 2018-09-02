@@ -20,14 +20,17 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
-        <activity android:name=".collectionActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppCompat.fullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".collectionActivity" />
         <activity android:name=".formActivity" />
+        <activity android:name=".albumActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -38,17 +41,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <activity android:name=".albumActivity" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -63,5 +55,4 @@
             android:value="@string/google_maps_key" />
 
     </application>
-
 </manifest>
