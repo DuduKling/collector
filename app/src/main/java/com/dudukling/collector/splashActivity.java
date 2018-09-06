@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SplashActivity extends AppCompatActivity {
+public class splashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void showLauncher() {
-        Intent intent = new Intent(SplashActivity.this, collectionActivity.class);
+        Intent intent = new Intent(splashActivity.this, collectionActivity.class);
         startActivity(intent);
         finish();
     }
