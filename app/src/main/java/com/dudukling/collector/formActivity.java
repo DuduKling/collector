@@ -151,8 +151,6 @@ public class formActivity extends AppCompatActivity {
                         //Toast.makeText(formActivity.this, "edit: " + String.valueOf(sample.getId()), Toast.LENGTH_SHORT).show();
                         dao.edit(sampleSave);
                     }
-                    dao.close();
-
                     //Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
                     finish();
                 }
@@ -179,6 +177,7 @@ public class formActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+        dao.close();
         return super.onOptionsItemSelected(item);
     }
 
@@ -280,6 +279,7 @@ public class formActivity extends AppCompatActivity {
                 List<Sample> samples = dao.getSamples();
                 sample = samples.get(savedSampleID - 1);
                 helperForm.fillForm(sample);
+                dao.close();
             }
         }
 

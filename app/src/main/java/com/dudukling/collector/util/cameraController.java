@@ -87,6 +87,7 @@ public class cameraController {
         if(sample.getId() == 0) {
             sampleDAO dao = new sampleDAO(formActivity);
             id = dao.lastID()+1;
+            dao.close();
         }else{
             id = sample.getId();
         }

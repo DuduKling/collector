@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -85,8 +86,8 @@ public class formHelper {
 
         setFields(activity);
 
-        Button gpsButton = activity.findViewById(R.id.buttonGPS);;
-        gpsControl = new gpsController(activity, gpsButton, fieldEditTextGPSLatitude, fieldEditTextGPSLongitude, fieldEditTextGPSAltitude);
+        Button gpsButton = activity.findViewById(R.id.buttonGPS);
+        gpsControl = new gpsController(activity, gpsButton, editTextGPSLatitude, editTextGPSLongitude, fieldEditTextGPSAltitude);
         speechControl = new speechController(activity);
         mapsControl = new mapsController(activity);
 
@@ -201,6 +202,7 @@ public class formHelper {
 
         sampleDAO dao = new sampleDAO(activity);
         List<String> imagesListDB = dao.getImagesDB(sample.getId());
+        dao.close();
 
         List<String> newestImageList = new ArrayList<>();
         newestImageList.addAll(imagesListDB);
@@ -244,11 +246,9 @@ public class formHelper {
 
         editTextGPSLatitude = activity.findViewById(R.id.editTextGPSLatitude);
         fieldEditTextGPSLatitude = editTextGPSLatitude.getEditText();
-        setValidateEmpty(editTextGPSLatitude);
 
         editTextGPSLongitude = activity.findViewById(R.id.editTextGPSLongitude);
         fieldEditTextGPSLongitude = editTextGPSLongitude.getEditText();
-        setValidateEmpty(editTextGPSLongitude);
 
         editTextGPSAltitude = activity.findViewById(R.id.editTextGPSAltitude);
         fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
@@ -256,18 +256,23 @@ public class formHelper {
 
         TextInputLayout editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
         fieldEditTextGeoCountry = editTextGeoCountry.getEditText();
+        setValidateEmpty(editTextGeoCountry);
 
         TextInputLayout editTextGeoState = activity.findViewById(R.id.editTextGeoState);
         fieldEditTextGeoState = editTextGeoState.getEditText();
+        setValidateEmpty(editTextGeoState);
 
         TextInputLayout editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
         fieldEditTextGeoCity = editGeoTextCity.getEditText();
+        setValidateEmpty(editGeoTextCity);
 
         TextInputLayout editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
         fieldEditTextGeoNeighborhood = editTextGeoNeighborhood.getEditText();
+        setValidateEmpty(editTextGeoNeighborhood);
 
         TextInputLayout editTextGeoOtherInfo = activity.findViewById(R.id.editTextGeoOtherInfo);
         fieldEditTextGeoOtherInfo = editTextGeoOtherInfo.getEditText();
+        setValidateEmpty(editTextGeoOtherInfo);
 
     }
 

@@ -182,6 +182,8 @@ public class collectionActivity extends AppCompatActivity {
         }catch(Exception sqlEx){
             Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
         }
+
+        dao.close();
     }
 
     public static String stripAccents(String s) {

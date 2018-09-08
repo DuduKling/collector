@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,6 +36,9 @@ public class gpsController {
     private boolean activeGPS;
     private mapsController mapsControl;
 
+    private final TextInputLayout editTextGPSLatitude;
+    private final TextInputLayout editTextGPSLongitude;
+
     private final EditText fieldEditTextGPSLatitude;
     private final EditText fieldEditTextGPSLongitude;
     private final EditText fieldEditTextGPSAltitude;
@@ -44,11 +48,13 @@ public class gpsController {
 
 
 
-    public gpsController(formActivity activity, Button gpsButton, EditText fieldEditTextGPSLatitude, EditText fieldEditTextGPSLongitude, EditText fieldEditTextGPSAltitude) {
+    public gpsController(formActivity activity, Button gpsButton, TextInputLayout editTextGPSLatitude, TextInputLayout editTextGPSLongitude, EditText fieldEditTextGPSAltitude) {
         this.activity = activity;
         this.gpsButton = gpsButton;
-        this.fieldEditTextGPSLatitude = fieldEditTextGPSLatitude;
-        this.fieldEditTextGPSLongitude = fieldEditTextGPSLongitude;
+        this.editTextGPSLatitude = editTextGPSLatitude;
+        this.editTextGPSLongitude = editTextGPSLongitude;
+        this.fieldEditTextGPSLatitude = editTextGPSLatitude.getEditText();
+        this.fieldEditTextGPSLongitude = editTextGPSLongitude.getEditText();
         this.fieldEditTextGPSAltitude = fieldEditTextGPSAltitude;
     }
 
@@ -174,37 +180,75 @@ public class gpsController {
     }
 
     public void onChangeLatLong() {
-        fieldEditTextGPSLatitude.addTextChangedListener(new TextWatcher() {
+        fieldEditTextGPSLatitude.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void afterTextChanged(Editable s){}
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    String text = fieldEditTextGPSLatitude.getText().toString();
+                    if(!text.isEmpty()){
+                        if(text.matches("^-?([1-8]?[1-9]|[1-9]0)\\.\\d{1,8}")){
+                            disableGPSUpdates();
+                            mapsControl.startMaps();
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(fieldEditTextGPSLatitude.hasFocus()) {
-                    disableGPSUpdates();
-                    mapsControl.startMaps();
+                        }else{editTextGPSLatitude.setError("Invalid format!");}
+                    }else{editTextGPSLatitude.setError("Required Field!");}
+                }else{
+                    editTextGPSLatitude.setError(null);
+                    editTextGPSLatitude.setErrorEnabled(false);
                 }
             }
         });
 
-        fieldEditTextGPSLongitude.addTextChangedListener(new TextWatcher() {
+        fieldEditTextGPSLongitude.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void afterTextChanged(Editable s){}
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    String text = fieldEditTextGPSLongitude.getText().toString();
+                    if(!text.isEmpty()){
+                        if(text.matches("^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\\.\\d{1,8}")){
+                            disableGPSUpdates();
+                            mapsControl.startMaps();
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(fieldEditTextGPSLongitude.hasFocus()) {
-                    disableGPSUpdates();
-                    mapsControl.startMaps();
+                        }else{editTextGPSLongitude.setError("Invalid format!");}
+                    }else{editTextGPSLongitude.setError("Required Field!");}
+                }else{
+                    editTextGPSLongitude.setError(null);
+                    editTextGPSLongitude.setErrorEnabled(false);
                 }
             }
         });
+
+//        fieldEditTextGPSLatitude.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s){}
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if(fieldEditTextGPSLatitude.hasFocus()) {
+//                    disableGPSUpdates();
+//                    mapsControl.startMaps();
+//                }
+//            }
+//        });
+//
+//        fieldEditTextGPSLongitude.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s){}
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if(fieldEditTextGPSLongitude.hasFocus()) {
+//                    disableGPSUpdates();
+//                    mapsControl.startMaps();
+//                }
+//            }
+//        });
     }
 
     public void setActiveGPS(boolean activeGPS) {
