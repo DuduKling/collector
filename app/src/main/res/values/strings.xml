@@ -2,29 +2,31 @@
     <string name="app_name">Collector</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_gizmos">Collector</string>
-    <string name="NoRecords">No records..</string>
-    <string name="ImageCamera">Image taken by the cel camera</string>
-    <string name="collector_name_field">Collector Name</string>
+    <string name="noRecords">No records..</string>
+    <string name="imageCamera">Image taken by the cel camera</string>
+    <string name="gray_background">Gray background</string>
+    <string name="transparentImage">Transparent image for the map</string>
+    <string name="albumImage">Album image</string>
+    <string name="thumbImage">Image thumb</string>
+    <string name="leafImageSplash">Leaf with shadow</string>
+
+    <string name="number_field">Number</string>
+    <string name="species_family_field">Family</string>
+    <string name="genus_field">Genus</string>
     <string name="species_field">Species</string>
-    <string name="species_family_field">Species Family</string>
-    <string name="author_field">Author</string>
-    <string name="sample_description_field">Sample Description</string>
-    <string name="ambient_description_field">Ambient Description</string>
+    <string name="collector_field">Collector</string>
     <string name="notes_field">Notes</string>
+
     <string name="flower_field">Flower</string>
     <string name="fruit_field">Fruit</string>
-    <string name="gray_background">Gray background</string>
+
     <string name="gps_field">GPS</string>
     <string name="latitude_field">Latitude</string>
     <string name="longitude_field">Longitude</string>
     <string name="altitude_field">Altitude</string>
-    <string name="TransparentImage">Transparent image for the map</string>
     <string name="country_field">Country</string>
-    <string name="state_field">State</string>
-    <string name="city_field">City</string>
-    <string name="neighborhood_field">Neighborhood</string>
-    <string name="other_locale_info_field">Other Locale Info</string>
-    <string name="AlbumImage">Album image</string>
-    <string name="ThumbImage">Image thumb</string>
-    <string name="leafiImageSplash">Leaf with shadow</string>
+    <string name="state_field">Major Area</string>
+    <string name="city_field">Minor Area</string>
+    <string name="neighborhood_field">Gazetteer</string>
+    <string name="locnotes_field">Locnotes</string>
 </resources>

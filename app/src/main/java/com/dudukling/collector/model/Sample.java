@@ -8,13 +8,13 @@ public class Sample implements Serializable {
     private int id;
     private String date;
 
-    private String species;
-    private String collectorName;
+    private String number;
     private String speciesFamily;
-    private String author;
-    private String sampleDescription;
-    private String ambientDescription;
+    private String genus;
+    private String species;
+    private String collector;
     private String notes;
+    private String locnotes;
 
     private String GPSLatitude;
     private String GPSLongitude;
@@ -26,7 +26,6 @@ public class Sample implements Serializable {
     private String GeoNeighborhood;
     //private String GeoStreet;
     //private String GeoNumber;
-    private String GeoOtherInfo;
 
     private String hasFlower;
     private String hasFruit;
@@ -59,12 +58,12 @@ public class Sample implements Serializable {
         this.date = date;
     }
 
-    public String getCollectorName() {
-        return collectorName;
+    public String getNumber() {
+        return number;
     }
 
-    public void setCollectorName(String collectorName) {
-        this.collectorName = collectorName;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getSpeciesFamily() {
@@ -75,28 +74,28 @@ public class Sample implements Serializable {
         this.speciesFamily = speciesFamily;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getGenus() {
+        return genus;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setGenus(String genus) {
+        this.genus = genus;
     }
 
-    public String getSampleDescription() {
-        return sampleDescription;
+    public String getLocnotes() {
+        return locnotes;
     }
 
-    public void setSampleDescription(String sampleDescription) {
-        this.sampleDescription = sampleDescription;
+    public void setLocnotes(String locnotes) {
+        this.locnotes = locnotes;
     }
 
-    public String getAmbientDescription() {
-        return ambientDescription;
+    public String getCollector() {
+        return collector;
     }
 
-    public void setAmbientDescription(String ambientDescription) {
-        this.ambientDescription = ambientDescription;
+    public void setCollector(String collector) {
+        this.collector = collector;
     }
 
     public String getNotes() {
@@ -187,11 +186,4 @@ public class Sample implements Serializable {
         GeoNeighborhood = geoNeighborhood;
     }
 
-    public String getGeoOtherInfo() {
-        return GeoOtherInfo;
-    }
-
-    public void setGeoOtherInfo(String geoOtherInfo) {
-        GeoOtherInfo = geoOtherInfo;
-    }
 }

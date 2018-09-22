@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,23 +39,21 @@ public class formHelper {
     private TextView fieldIDForm;
     private TextView fieldDateForm;
 
-    private TextInputLayout textInputCollectorName;
+    private TextInputLayout textInputNumber;
     private TextInputLayout textInputSpecies;
     private TextInputLayout textInputSpeciesFamily;
-    private TextInputLayout textInputAuthor;
-    private TextInputLayout textInputSampleDescription;
-    private TextInputLayout textInputAmbientDescription;
+    private TextInputLayout textInputGenus;
+    private TextInputLayout textInputCollector;
     private TextInputLayout textInputNotes;
     private TextInputLayout editTextGPSLatitude;
     private TextInputLayout editTextGPSLongitude;
     private TextInputLayout editTextGPSAltitude;
 
     private EditText fieldSpecies;
-    private EditText fieldCollectorName;
+    private EditText fieldNumber;
     private EditText fieldSpeciesFamily;
-    private EditText fieldAuthor;
-    private EditText fieldSampleDescription;
-    private EditText fieldAmbientDescription;
+    private EditText fieldGenus;
+    private EditText fieldCollector;
     private EditText fieldNotes;
     private EditText fieldEditTextGPSLatitude;
     private EditText fieldEditTextGPSLongitude;
@@ -65,7 +62,7 @@ public class formHelper {
     private EditText fieldEditTextGeoState;
     private EditText fieldEditTextGeoCity;
     private EditText fieldEditTextGeoNeighborhood;
-    private EditText fieldEditTextGeoOtherInfo;
+    private EditText fieldEditTextLocnotes;
 
     private final CheckBox checkBoxFlower;
     private final CheckBox checkBoxFruit;
@@ -100,12 +97,11 @@ public class formHelper {
     @SuppressLint("SetTextI18n")
     private void checkTypeOfForm(formActivity activity, String formType, Sample sample, FloatingActionButton cameraButton, FloatingActionButton albumButton) {
         if (formType.equals("readOnly")) {
-            disableEditText(fieldCollectorName);
+            disableEditText(fieldNumber);
             disableEditText(fieldSpecies);
             disableEditText(fieldSpeciesFamily);
-            disableEditText(fieldAuthor);
-            disableEditText(fieldSampleDescription);
-            disableEditText(fieldAmbientDescription);
+            disableEditText(fieldGenus);
+            disableEditText(fieldCollector);
             disableEditText(fieldNotes);
             disableEditText(fieldEditTextGPSLatitude);
             disableEditText(fieldEditTextGPSLongitude);
@@ -114,7 +110,7 @@ public class formHelper {
             disableEditText(fieldEditTextGeoState);
             disableEditText(fieldEditTextGeoCity);
             disableEditText(fieldEditTextGeoNeighborhood);
-            disableEditText(fieldEditTextGeoOtherInfo);
+            disableEditText(fieldEditTextLocnotes);
 
             disableCheckBox(checkBoxFlower);
             disableCheckBox(checkBoxFruit);
@@ -145,7 +141,7 @@ public class formHelper {
             gpsControl.toggleGPS(activity);
             gpsControl.onChangeLatLong();
 
-            speechControl.setSpeechButtons(fieldCollectorName, fieldSpecies, fieldSpeciesFamily, fieldAuthor, fieldSampleDescription, fieldAmbientDescription, fieldNotes);
+            setSpeech();
         }
 
         if (formType.equals("edit")) {
@@ -166,8 +162,12 @@ public class formHelper {
 
             mapsControl.startMaps();
 
-            speechControl.setSpeechButtons(fieldCollectorName, fieldSpecies, fieldSpeciesFamily, fieldAuthor, fieldSampleDescription, fieldAmbientDescription, fieldNotes);
+            setSpeech();
         }
+    }
+
+    public void setSpeech() {
+        speechControl.setSpeechButtons(fieldSpeciesFamily, fieldGenus, fieldSpecies, fieldCollector, fieldNotes, fieldEditTextLocnotes);
     }
 
     public Sample getSample(List<String> imagesList) {
@@ -176,13 +176,13 @@ public class formHelper {
         sample.setDate(todayDate());
         sample.setId(sampleID);
 
-        sample.setSpecies(fieldSpecies.getText().toString());
-        sample.setCollectorName(fieldCollectorName.getText().toString());
+        sample.setNumber(fieldNumber.getText().toString());
         sample.setSpeciesFamily(fieldSpeciesFamily.getText().toString());
-        sample.setAuthor(fieldAuthor.getText().toString());
-        sample.setSampleDescription(fieldSampleDescription.getText().toString());
-        sample.setAmbientDescription(fieldAmbientDescription.getText().toString());
+        sample.setGenus(fieldGenus.getText().toString());
+        sample.setSpecies(fieldSpecies.getText().toString());
+        sample.setCollector(fieldCollector.getText().toString());
         sample.setNotes(fieldNotes.getText().toString());
+        sample.setLocnotes(fieldEditTextLocnotes.getText().toString());
 
         String latitude = fieldEditTextGPSLatitude.getText().toString();
         String longitude = fieldEditTextGPSLongitude.getText().toString();
@@ -195,7 +195,6 @@ public class formHelper {
         sample.setGeoState(fieldEditTextGeoState.getText().toString());
         sample.setGeoCity(fieldEditTextGeoCity.getText().toString());
         sample.setGeoNeighborhood(fieldEditTextGeoNeighborhood.getText().toString());
-        sample.setGeoOtherInfo(fieldEditTextGeoOtherInfo.getText().toString());
 
         if(checkBoxFlower.isChecked()){sample.setHasFlower("x");}else{sample.setHasFlower("");}
         if(checkBoxFruit.isChecked()){sample.setHasFruit("x");}else{sample.setHasFruit("");}
@@ -216,29 +215,25 @@ public class formHelper {
     }
 
     private void setFields(formActivity activity) {
-        textInputCollectorName = activity.findViewById(R.id.editTextCollectorName);
-        fieldCollectorName = textInputCollectorName.getEditText();
-        setValidateEmpty(textInputCollectorName);
-
-        textInputSpecies = activity.findViewById(R.id.editTextSpecies);
-        fieldSpecies = textInputSpecies.getEditText();
-        setValidateEmpty(textInputSpecies);
+        textInputNumber = activity.findViewById(R.id.Number);
+        fieldNumber = textInputNumber.getEditText();
+        setValidateEmpty(textInputNumber);
 
         textInputSpeciesFamily = activity.findViewById(R.id.editTextSpeciesFamily);
         fieldSpeciesFamily = textInputSpeciesFamily.getEditText();
         setValidateEmpty(textInputSpeciesFamily);
 
-        textInputAuthor = activity.findViewById(R.id.editTextAuthor);
-        fieldAuthor = textInputAuthor.getEditText();
-        setValidateEmpty(textInputAuthor);
+        textInputGenus = activity.findViewById(R.id.editTextGenus);
+        fieldGenus = textInputGenus.getEditText();
+        setValidateEmpty(textInputGenus);
 
-        textInputSampleDescription = activity.findViewById(R.id.editTextSampleDescription);
-        fieldSampleDescription = textInputSampleDescription.getEditText();
-        setValidateEmpty(textInputSampleDescription);
+        textInputSpecies = activity.findViewById(R.id.editTextSpecies);
+        fieldSpecies = textInputSpecies.getEditText();
+        setValidateEmpty(textInputSpecies);
 
-        textInputAmbientDescription = activity.findViewById(R.id.editTextAmbientDescription);
-        fieldAmbientDescription = textInputAmbientDescription.getEditText();
-        setValidateEmpty(textInputAmbientDescription);
+        textInputCollector = activity.findViewById(R.id.editTextCollector);
+        fieldCollector = textInputCollector.getEditText();
+        setValidateEmpty(textInputCollector);
 
         textInputNotes = activity.findViewById(R.id.editTextNotes);
         fieldNotes = textInputNotes.getEditText();
@@ -270,9 +265,9 @@ public class formHelper {
         fieldEditTextGeoNeighborhood = editTextGeoNeighborhood.getEditText();
         setValidateEmpty(editTextGeoNeighborhood);
 
-        TextInputLayout editTextGeoOtherInfo = activity.findViewById(R.id.editTextGeoOtherInfo);
-        fieldEditTextGeoOtherInfo = editTextGeoOtherInfo.getEditText();
-        setValidateEmpty(editTextGeoOtherInfo);
+        TextInputLayout editTextGeoLocnotes = activity.findViewById(R.id.editTextLocnotes);
+        fieldEditTextLocnotes = editTextGeoLocnotes.getEditText();
+        setValidateEmpty(editTextGeoLocnotes);
 
     }
 
@@ -281,11 +276,11 @@ public class formHelper {
         fieldDateForm.setText("Date: " + sample.getDate());
 
         fieldSpecies.setText(sample.getSpecies());
-        fieldCollectorName.setText(sample.getCollectorName());
+        fieldNumber.setText(sample.getNumber());
         fieldSpeciesFamily.setText(sample.getSpeciesFamily());
-        fieldAuthor.setText(sample.getAuthor());
-        fieldSampleDescription.setText(sample.getSampleDescription());
-        fieldAmbientDescription.setText(sample.getAmbientDescription());
+        fieldGenus.setText(sample.getGenus());
+        fieldCollector.setText(sample.getCollector());
+        fieldEditTextLocnotes.setText(sample.getLocnotes());
         fieldNotes.setText(sample.getNotes());
 
         fieldEditTextGPSLatitude.setText(sample.getGPSLatitude());
@@ -296,7 +291,6 @@ public class formHelper {
         fieldEditTextGeoState.setText(sample.getGeoState());
         fieldEditTextGeoCity.setText(sample.getGeoCity());
         fieldEditTextGeoNeighborhood.setText(sample.getGeoNeighborhood());
-        fieldEditTextGeoOtherInfo.setText(sample.getGeoOtherInfo());
 
         if(sample.getHasFlower()!=null){if(sample.getHasFlower().equals("x")){checkBoxFlower.setChecked(true);}}
         if(sample.getHasFruit()!=null){if(sample.getHasFruit().equals("x")){checkBoxFruit.setChecked(true);}}
@@ -315,12 +309,11 @@ public class formHelper {
     }
 
     public boolean validateForm() {
-        if(fieldIsEmpty(textInputCollectorName)){return false;}
+        if(fieldIsEmpty(textInputNumber)){return false;}
         if(fieldIsEmpty(textInputSpecies)){return false;}
         if(fieldIsEmpty(textInputSpeciesFamily)){return false;}
-        if(fieldIsEmpty(textInputAuthor)){return false;}
-        if(fieldIsEmpty(textInputSampleDescription)){return false;}
-        if(fieldIsEmpty(textInputAmbientDescription)){return false;}
+        if(fieldIsEmpty(textInputGenus)){return false;}
+        if(fieldIsEmpty(textInputCollector)){return false;}
         if(fieldIsEmpty(textInputNotes)){return false;}
         if(fieldIsEmpty(editTextGPSLatitude)){return false;}
         if(fieldIsEmpty(editTextGPSLongitude)){return false;}

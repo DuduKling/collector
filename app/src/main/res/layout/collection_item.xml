@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/avatar_leaf"
-        android:contentDescription="@string/ThumbImage" />
+        android:contentDescription="@string/thumbImage" />
 
     <TextView
         android:id="@+id/textViewSpecies"

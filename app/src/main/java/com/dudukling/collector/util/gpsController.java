@@ -13,8 +13,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +46,7 @@ public class gpsController {
 
 
 
-    public gpsController(formActivity activity, Button gpsButton, TextInputLayout editTextGPSLatitude, TextInputLayout editTextGPSLongitude, EditText fieldEditTextGPSAltitude) {
+    gpsController(formActivity activity, Button gpsButton, TextInputLayout editTextGPSLatitude, TextInputLayout editTextGPSLongitude, EditText fieldEditTextGPSAltitude) {
         this.activity = activity;
         this.gpsButton = gpsButton;
         this.editTextGPSLatitude = editTextGPSLatitude;

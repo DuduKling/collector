@@ -32,5 +32,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/avatar_leaf_shadow"
-        android:contentDescription="@string/leafiImageSplash" />
+        android:contentDescription="@string/leafImageSplash" />
 </android.support.constraint.ConstraintLayout>

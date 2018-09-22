@@ -40,7 +40,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/NoRecords"
+        android:text="@string/noRecords"
         android:textAllCaps="false"
         android:textSize="18sp"
         android:visibility="gone"

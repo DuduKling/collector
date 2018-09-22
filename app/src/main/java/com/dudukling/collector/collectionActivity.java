@@ -128,9 +128,9 @@ public class collectionActivity extends AppCompatActivity {
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
             SQLiteDatabase db = dao.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT id, date, collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitude, longitude, altitude, hasFlower, hasFruit, country, state, city, neighborhood, otherInfo FROM Collection",null);
+            Cursor curCSV = db.rawQuery("SELECT id, date, number, speciesFamily, genus, species, collector, locnotes, notes, latitude, longitude, altitude, hasFlower, hasFruit, country, state, city, neighborhood FROM Collection",null);
 
-            String[] str = {"ID", "colldd", "collmm", "collyy", "collector", "sp", "family", "author", "Sample Description", "habitat", "Notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude", "Flower", "Fruit", "country", "majorarea", "minorarea", "Bairro", "Outras Info do Local"};
+            String[] str = {"ID", "colldd", "collmm", "collyy", "number", "family", "genus", "sp", "collector", "notes", "lat_grau", "lat_min", "lat_sec", "ns", "long_grau", "long_min", "long_sec", "ew", "Altitude", "Flower", "Fruit", "country", "majorarea", "minorarea", "gazetteer", "locnotes"};
 
             csvWrite.writeNext(str);
 
@@ -138,12 +138,12 @@ public class collectionActivity extends AppCompatActivity {
                 // Column you want get from DB:
                 String id = curCSV.getString(0);
                 String date = curCSV.getString(1);
-                String collectorName = stripAccents(curCSV.getString(2));
-                String species = stripAccents(curCSV.getString(3));
-                String speciesFamily = stripAccents(curCSV.getString(4));
-                String author = stripAccents(curCSV.getString(5));
-                String sampleDescription = stripAccents(curCSV.getString(6));
-                String ambientDescription = stripAccents(curCSV.getString(7));
+                String number = stripAccents(curCSV.getString(2));
+                String speciesFamily = stripAccents(curCSV.getString(3));
+                String genus = stripAccents(curCSV.getString(4));
+                String species = stripAccents(curCSV.getString(5));
+                String collector = stripAccents(curCSV.getString(6));
+                String locnotes = stripAccents(curCSV.getString(7));
                 String notes = stripAccents(curCSV.getString(8));
                 String latitude = curCSV.getString(9);
                 String longitude = curCSV.getString(10);
@@ -154,7 +154,6 @@ public class collectionActivity extends AppCompatActivity {
                 String state = stripAccents(curCSV.getString(15));
                 String city = stripAccents(curCSV.getString(16));
                 String neighborhood = stripAccents(curCSV.getString(17));
-                String otherInfo = stripAccents(curCSV.getString(18));
 
                 // Fix GPS:
                 String LatHemisphere;
@@ -172,7 +171,7 @@ public class collectionActivity extends AppCompatActivity {
                 String[] dateSplit = date.split("/");
 
 
-                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], collectorName, species, speciesFamily, author, sampleDescription, ambientDescription, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude, flower, fruit, country, state, city, neighborhood, otherInfo};
+                String arrStr[] = {id, dateSplit[0], dateSplit[1], dateSplit[2], number, speciesFamily, genus, species, collector, notes, latitudeSplit[0], latitudeSplit[1], latitudeSplit[2], LatHemisphere, longitudeSplit[0], longitudeSplit[1], longitudeSplit[2], LongHemisphere, altitude, flower, fruit, country, state, city, neighborhood, locnotes};
 
                 csvWrite.writeNext(arrStr);
             }

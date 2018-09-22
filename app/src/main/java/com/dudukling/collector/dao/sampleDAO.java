@@ -21,13 +21,13 @@ public class sampleDAO extends SQLiteOpenHelper {
         String sql = "CREATE TABLE Collection (" +
                 " id INTEGER PRIMARY KEY," +
                 " date TEXT NOT NULL," +
-                " collectorName TEXT NOT NULL," +
-                " species TEXT NOT NULL," +
+                " number TEXT NOT NULL," +
                 " speciesFamily TEXT NOT NULL," +
-                " author TEXT NOT NULL," +
-                " sampleDescription TEXT NOT NULL," +
-                " ambientDescription TEXT NOT NULL," +
+                " genus TEXT NOT NULL," +
+                " species TEXT NOT NULL," +
+                " collector TEXT NOT NULL," +
                 " notes TEXT NOT NULL," +
+                " locnotes TEXT NOT NULL," +
                 " latitude TEXT NOT NULL," +
                 " longitude TEXT NOT NULL," +
                 " altitude TEXT NOT NULL," +
@@ -36,8 +36,7 @@ public class sampleDAO extends SQLiteOpenHelper {
                 " country TEXT NOT NULL," +
                 " state TEXT NOT NULL," +
                 " city TEXT NOT NULL," +
-                " neighborhood TEXT NOT NULL," +
-                " otherInfo TEXT NOT NULL" +
+                " neighborhood TEXT NOT NULL" +
                 ");";
         db.execSQL(sql);
 
@@ -84,13 +83,13 @@ public class sampleDAO extends SQLiteOpenHelper {
 
         queryData.put("date", sample.getDate());
 
-        queryData.put("collectorName", sample.getCollectorName());
+        queryData.put("number", sample.getNumber());
         queryData.put("species", sample.getSpecies());
         queryData.put("speciesFamily", sample.getSpeciesFamily());
-        queryData.put("author", sample.getAuthor());
-        queryData.put("sampleDescription", sample.getSampleDescription());
-        queryData.put("ambientDescription", sample.getAmbientDescription());
+        queryData.put("genus", sample.getGenus());
+        queryData.put("collector", sample.getCollector());
         queryData.put("notes", sample.getNotes());
+        queryData.put("locnotes", sample.getLocnotes());
 
         queryData.put("latitude", sample.getGPSLatitude());
         queryData.put("longitude", sample.getGPSLongitude());
@@ -103,7 +102,6 @@ public class sampleDAO extends SQLiteOpenHelper {
         queryData.put("state", sample.getGeoState());
         queryData.put("city", sample.getGeoCity());
         queryData.put("neighborhood", sample.getGeoNeighborhood());
-        queryData.put("otherInfo", sample.getGeoOtherInfo());
 
         return queryData;
     }
@@ -123,13 +121,12 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setId(dbSampleID);
             sample.setDate(c.getString(c.getColumnIndex("date")));
 
-            sample.setCollectorName(c.getString(c.getColumnIndex("collectorName")));
-            sample.setSpecies(c.getString(c.getColumnIndex("species")));
+            sample.setNumber(c.getString(c.getColumnIndex("number")));
             sample.setSpeciesFamily(c.getString(c.getColumnIndex("speciesFamily")));
-            sample.setAuthor(c.getString(c.getColumnIndex("author")));
-            sample.setSampleDescription(c.getString(c.getColumnIndex("sampleDescription")));
-            sample.setAmbientDescription(c.getString(c.getColumnIndex("ambientDescription")));
+            sample.setGenus(c.getString(c.getColumnIndex("genus")));
+            sample.setSpecies(c.getString(c.getColumnIndex("species")));
             sample.setNotes(c.getString(c.getColumnIndex("notes")));
+            sample.setLocnotes(c.getString(c.getColumnIndex("locnotes")));
 
             sample.setGPSLatitude(c.getString(c.getColumnIndex("latitude")));
             sample.setGPSLongitude(c.getString(c.getColumnIndex("longitude")));
@@ -142,7 +139,6 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setGeoState(c.getString(c.getColumnIndex("state")));
             sample.setGeoCity(c.getString(c.getColumnIndex("city")));
             sample.setGeoNeighborhood(c.getString(c.getColumnIndex("neighborhood")));
-            sample.setGeoOtherInfo(c.getString(c.getColumnIndex("otherInfo")));
 
             // Pegando imagens
             List<String> imagesList = getImagesDB(dbSampleID);

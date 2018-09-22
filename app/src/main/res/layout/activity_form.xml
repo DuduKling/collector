@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/avatar_leaf"
-            android:contentDescription="@string/ImageCamera" />
+            android:contentDescription="@string/imageCamera" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonCamera"
@@ -83,66 +83,25 @@
 
         <!-- FIELDS -->
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextCollectorName"
+            android:id="@+id/Number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toStartOf="@+id/collector_speech_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TextViewDateForm">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/collector_name_field"
-                android:inputType="textCapSentences|textPersonName"
+                android:hint="@string/number_field"
+                android:inputType="number"
                 android:maxLength="100"
                 android:maxLines="4" />
         </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/collector_speech_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_rect_accentgreen_mic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextCollectorName" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextSpecies"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/species_speech_button"
-            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCollectorName">
-
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/species_field"
-                android:inputType="textCapSentences|textPersonName"
-                android:maxLength="100"
-                android:maxLines="4"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/species_speech_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_rect_accentgreen_mic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextSpecies" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextSpeciesFamily"
@@ -153,7 +112,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/speciesFamily_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSpecies">
+            app:layout_constraintTop_toBottomOf="@+id/Number">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
@@ -163,7 +122,6 @@
                 android:maxLength="100"
                 android:maxLines="4"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
             android:id="@+id/speciesFamily_speech_button"
             android:layout_width="48dp"
@@ -174,29 +132,44 @@
             android:background="@drawable/bg_rect_accentgreen_mic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextSpeciesFamily" />
+        <ProgressBar
+            android:id="@+id/progressBarSpeciesFamily"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="12dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSpeciesFamily"
+            app:layout_constraintEnd_toStartOf="@+id/speciesFamily_speech_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSpeciesFamily" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextAuthor"
+            android:id="@+id/editTextGenus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/author_speech_button"
+            app:layout_constraintEnd_toStartOf="@+id/genus_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
             app:layout_constraintTop_toBottomOf="@+id/editTextSpeciesFamily">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/author_field"
+                android:hint="@string/genus_field"
                 android:inputType="textCapSentences|textPersonName"
                 android:maxLength="100"
                 android:maxLines="4"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
-            android:id="@+id/author_speech_button"
+            android:id="@+id/genus_speech_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
@@ -204,30 +177,45 @@
             android:layout_weight="1"
             android:background="@drawable/bg_rect_accentgreen_mic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextAuthor" />
+            app:layout_constraintTop_toTopOf="@+id/editTextGenus" />
+        <ProgressBar
+            android:id="@+id/genusBarAuthor"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="12dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextGenus"
+            app:layout_constraintEnd_toStartOf="@+id/genus_speech_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGenus" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextSampleDescription"
+            android:id="@+id/editTextSpecies"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/sampleDescription_speech_button"
+            app:layout_constraintEnd_toStartOf="@+id/species_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAuthor">
+            app:layout_constraintTop_toBottomOf="@+id/editTextGenus">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/sample_description_field"
-                android:inputType="textCapSentences|textMultiLine"
-                android:maxLength="3000"
-                android:maxLines="8"/>
+                android:hint="@string/species_field"
+                android:inputType="textCapSentences|textPersonName"
+                android:maxLength="100"
+                android:maxLines="4"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
-            android:id="@+id/sampleDescription_speech_button"
+            android:id="@+id/species_speech_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
@@ -235,30 +223,45 @@
             android:layout_weight="1"
             android:background="@drawable/bg_rect_accentgreen_mic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextSampleDescription" />
+            app:layout_constraintTop_toTopOf="@+id/editTextSpecies" />
+        <ProgressBar
+            android:id="@+id/progressBarSpecies"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="12dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSpecies"
+            app:layout_constraintEnd_toStartOf="@+id/species_speech_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSpecies" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextAmbientDescription"
+            android:id="@+id/editTextCollector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/ambientDescription_speech_button"
+            app:layout_constraintEnd_toStartOf="@+id/collector_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSampleDescription">
+            app:layout_constraintTop_toBottomOf="@+id/editTextSpecies">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/ambient_description_field"
+                android:hint="@string/collector_field"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="3000"
                 android:maxLines="8"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
-            android:id="@+id/ambientDescription_speech_button"
+            android:id="@+id/collector_speech_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
@@ -266,7 +269,23 @@
             android:layout_weight="1"
             android:background="@drawable/bg_rect_accentgreen_mic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editTextAmbientDescription" />
+            app:layout_constraintTop_toTopOf="@+id/editTextCollector" />
+        <ProgressBar
+            android:id="@+id/progressBarCollector"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="12dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextCollector"
+            app:layout_constraintEnd_toStartOf="@+id/collector_speech_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextCollector" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextNotes"
@@ -277,7 +296,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/notes_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAmbientDescription">
+            app:layout_constraintTop_toBottomOf="@+id/editTextCollector">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
@@ -287,7 +306,6 @@
                 android:maxLength="3000"
                 android:maxLines="8"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
             android:id="@+id/notes_speech_button"
             android:layout_width="48dp"
@@ -298,6 +316,22 @@
             android:background="@drawable/bg_rect_accentgreen_mic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextNotes" />
+        <ProgressBar
+            android:id="@+id/progressBarNotes"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="12dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNotes"
+            app:layout_constraintEnd_toStartOf="@+id/notes_speech_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNotes" />
 
         <CheckBox
             android:id="@+id/checkBoxFlower"
@@ -312,7 +346,6 @@
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
             app:layout_constraintTop_toBottomOf="@+id/editTextNotes"
             android:layout_marginStart="8dp" />
-
         <CheckBox
             android:id="@+id/checkBoxFruit"
             android:layout_width="wrap_content"
@@ -356,7 +389,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/bg_gps_form" />
-
         <Button
             android:id="@+id/buttonGPS"
             android:layout_width="56dp"
@@ -370,6 +402,19 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/bg_gps_form"
             app:layout_constraintTop_toTopOf="@+id/textViewGPS" />
+        <ProgressBar
+            android:id="@+id/progressBarGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/buttonGPS"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/textViewGPS"
+            app:layout_constraintTop_toTopOf="@+id/bg_gps_form" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextGPSLatitude"
@@ -427,34 +472,6 @@
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
-
-        <!-- MAPS -->
-        <RelativeLayout
-            android:id="@+id/map_layout"
-            android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
-            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@id/editTextGPSAltitude">
-
-            <FrameLayout
-                android:id="@+id/mapFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/transparent_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/TransparentImage" />
-
-        </RelativeLayout>
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/editTextGeoCountry"
             android:layout_width="0dp"
@@ -462,7 +479,7 @@
             android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/map_layout">
+            app:layout_constraintTop_toBottomOf="@+id/editTextGPSAltitude">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
@@ -519,74 +536,35 @@
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:id="@+id/editTextGeoStreet"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoNeighborhood">-->
-
-            <!--<android.support.design.widget.TextInputEditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Street"-->
-                <!--android:inputType="textPersonName" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:id="@+id/editTextGeoNumber"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoStreet">-->
-
-            <!--<android.support.design.widget.TextInputEditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Number"-->
-                <!--android:inputType="textPersonName" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/editTextGeoOtherInfo"
+            android:id="@+id/editTextLocnotes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="40dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintEnd_toStartOf="@+id/locnotes_speech_button"
             app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
-            app:layout_constraintTop_toBottomOf="@+id/editTextGeoNeighborhood"
-            app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form">
+            app:layout_constraintTop_toBottomOf="@+id/editTextGeoNeighborhood">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/other_locale_info_field"
+                android:hint="@string/locnotes_field"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
-
-        <!--<TextView-->
-            <!--android:id="@+id/textViewTestMapInfo"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginBottom="40dp"-->
-            <!--android:text="..."-->
-            <!--app:layout_constraintBottom_toBottomOf="@+id/bg_gps_form"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/editTextGeoOtherInfo" />-->
-
-
-        <!-- LOADINGS -->
+        <Button
+            android:id="@+id/locnotes_speech_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rect_accentgreen_mic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextLocnotes" />
         <ProgressBar
-            android:id="@+id/progressBarColectorName"
+            android:id="@+id/progressBarLocnotes"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -597,127 +575,40 @@
             android:layout_marginTop="32dp"
             android:indeterminate="true"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextCollectorName"
-            app:layout_constraintEnd_toStartOf="@+id/collector_speech_button"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextLocnotes"
+            app:layout_constraintEnd_toStartOf="@+id/locnotes_speech_button"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCollectorName" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextLocnotes" />
 
-        <ProgressBar
-            android:id="@+id/progressBarSpecies"
-            style="?android:attr/progressBarStyleHorizontal"
+        <!-- MAPS -->
+        <RelativeLayout
+            android:id="@+id/map_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextSpecies"
-            app:layout_constraintEnd_toStartOf="@+id/species_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSpecies" />
-
-        <ProgressBar
-            android:id="@+id/progressBarSpeciesFamily"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextSpeciesFamily"
-            app:layout_constraintEnd_toStartOf="@+id/speciesFamily_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSpeciesFamily" />
-
-        <ProgressBar
-            android:id="@+id/progressBarAuthor"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextAuthor"
-            app:layout_constraintEnd_toStartOf="@+id/author_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAuthor" />
-
-        <ProgressBar
-            android:id="@+id/progressBarSampleDescription"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextSampleDescription"
-            app:layout_constraintEnd_toStartOf="@+id/sampleDescription_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSampleDescription" />
-
-        <ProgressBar
-            android:id="@+id/progressBarAmbientDescription"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextAmbientDescription"
-            app:layout_constraintEnd_toStartOf="@+id/ambientDescription_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAmbientDescription" />
-
-        <ProgressBar
-            android:id="@+id/progressBarNotes"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="12dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextNotes"
-            app:layout_constraintEnd_toStartOf="@+id/notes_speech_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNotes" />
-
-        <ProgressBar
-            android:id="@+id/progressBarGPS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/buttonGPS"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textViewGPS"
-            app:layout_constraintTop_toTopOf="@+id/bg_gps_form" />
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewSampleForm"
+            app:layout_constraintStart_toStartOf="@+id/imageViewSampleForm"
+            app:layout_constraintBottom_toBottomOf="@id/bg_gps_form"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLocnotes">
+
+            <FrameLayout
+                android:id="@+id/mapFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/transparentImage" />
+
+        </RelativeLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

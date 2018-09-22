@@ -213,6 +213,9 @@ public class formActivity extends AppCompatActivity {
                 helperForm.speechControl.disableSpeechButtons();
                 Toast.makeText(this, "No Speech-to-Text", Toast.LENGTH_SHORT).show();
             }
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                helperForm.setSpeech();
+            }
         }
     }
 
