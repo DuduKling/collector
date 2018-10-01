@@ -48,6 +48,11 @@ public class formHelper {
     private TextInputLayout editTextGPSLatitude;
     private TextInputLayout editTextGPSLongitude;
     private TextInputLayout editTextGPSAltitude;
+    private TextInputLayout editTextGeoCountry;
+    private TextInputLayout editTextGeoState;
+    private TextInputLayout editGeoTextCity;
+    private TextInputLayout editTextGeoNeighborhood;
+    private TextInputLayout editTextGeoLocnotes;
 
     private EditText fieldSpecies;
     private EditText fieldNumber;
@@ -225,11 +230,11 @@ public class formHelper {
 
         textInputGenus = activity.findViewById(R.id.editTextGenus);
         fieldGenus = textInputGenus.getEditText();
-        setValidateEmpty(textInputGenus);
+        //setValidateEmpty(textInputGenus);
 
         textInputSpecies = activity.findViewById(R.id.editTextSpecies);
         fieldSpecies = textInputSpecies.getEditText();
-        setValidateEmpty(textInputSpecies);
+        //setValidateEmpty(textInputSpecies);
 
         textInputCollector = activity.findViewById(R.id.editTextCollector);
         fieldCollector = textInputCollector.getEditText();
@@ -249,25 +254,25 @@ public class formHelper {
         fieldEditTextGPSAltitude = editTextGPSAltitude.getEditText();
         setValidateEmpty(editTextGPSAltitude);
 
-        TextInputLayout editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
+        editTextGeoCountry = activity.findViewById(R.id.editTextGeoCountry);
         fieldEditTextGeoCountry = editTextGeoCountry.getEditText();
         setValidateEmpty(editTextGeoCountry);
 
-        TextInputLayout editTextGeoState = activity.findViewById(R.id.editTextGeoState);
+        editTextGeoState = activity.findViewById(R.id.editTextGeoState);
         fieldEditTextGeoState = editTextGeoState.getEditText();
         setValidateEmpty(editTextGeoState);
 
-        TextInputLayout editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
+        editGeoTextCity = activity.findViewById(R.id.editTextGeoCity);
         fieldEditTextGeoCity = editGeoTextCity.getEditText();
         setValidateEmpty(editGeoTextCity);
 
-        TextInputLayout editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
+        editTextGeoNeighborhood = activity.findViewById(R.id.editTextGeoNeighborhood);
         fieldEditTextGeoNeighborhood = editTextGeoNeighborhood.getEditText();
         setValidateEmpty(editTextGeoNeighborhood);
 
-        TextInputLayout editTextGeoLocnotes = activity.findViewById(R.id.editTextLocnotes);
+        editTextGeoLocnotes = activity.findViewById(R.id.editTextLocnotes);
         fieldEditTextLocnotes = editTextGeoLocnotes.getEditText();
-        setValidateEmpty(editTextGeoLocnotes);
+        //setValidateEmpty(editTextGeoLocnotes);
 
     }
 
@@ -310,14 +315,18 @@ public class formHelper {
 
     public boolean validateForm() {
         if(fieldIsEmpty(textInputNumber)){return false;}
-        if(fieldIsEmpty(textInputSpecies)){return false;}
+        //if(fieldIsEmpty(textInputSpecies)){return false;}
         if(fieldIsEmpty(textInputSpeciesFamily)){return false;}
-        if(fieldIsEmpty(textInputGenus)){return false;}
+        //if(fieldIsEmpty(textInputGenus)){return false;}
         if(fieldIsEmpty(textInputCollector)){return false;}
         if(fieldIsEmpty(textInputNotes)){return false;}
         if(fieldIsEmpty(editTextGPSLatitude)){return false;}
         if(fieldIsEmpty(editTextGPSLongitude)){return false;}
         if(fieldIsEmpty(editTextGPSAltitude)){return false;}
+        if(fieldIsEmpty(editTextGeoCountry)){return false;}
+        if(fieldIsEmpty(editTextGeoState)){return false;}
+        if(fieldIsEmpty(editGeoTextCity)){return false;}
+        if(fieldIsEmpty(editTextGeoNeighborhood)){return false;}
 
         return true;
     }

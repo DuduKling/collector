@@ -10,60 +10,88 @@
 
     <ImageView
         android:id="@+id/imageViewSample"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/thumbImage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatar_leaf"
-        android:contentDescription="@string/thumbImage" />
+        app:srcCompat="@drawable/avatar_leaf" />
+
+
+    <TextView
+        android:id="@+id/textViewFamily"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewSample"
+        app:layout_constraintTop_toTopOf="@+id/imageViewSample"
+        tools:text="Família" />
+
+    <TextView
+        android:id="@+id/textViewGenus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewNumber"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/textViewFamily"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFamily"
+        tools:text="Gênero" />
 
     <TextView
         android:id="@+id/textViewSpecies"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageViewSample"
-        app:layout_constraintTop_toTopOf="@+id/imageViewSample"
-        tools:src="@sample/samples.json/samples/especie"
-        tools:text="Espécie" />
-
-    <TextView
-        android:id="@+id/textViewId"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="63dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="63dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textSize="14sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewSample"
         app:layout_constraintEnd_toStartOf="@+id/textViewDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@+id/imageViewSample"
-        tools:src="@sample/samples.json/samples/id"
-        tools:text="#ID" />
+        app:layout_constraintStart_toStartOf="@+id/textViewGenus"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGenus"
+        tools:text="Espécie" />
+
+
+    <TextView
+        android:id="@+id/textViewNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewDate"
+        app:layout_constraintEnd_toEndOf="@+id/textViewDate"
+        app:layout_constraintStart_toEndOf="@+id/textViewGenus"
+        tools:text="#Number" />
 
     <TextView
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginBottom="0dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewId"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSpecies"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
+        app:layout_constraintStart_toEndOf="@+id/textViewSpecies"
         tools:src="@sample/samples.json/samples/data"
         tools:text="20/01/2018" />
 

@@ -7,11 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +38,7 @@ import java.util.List;
 
 public class collectionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private recyclerAdapter RecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,26 @@ public class collectionActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_collection, menu);
 
+        //final MenuItem searchItem = menu.findItem(R.id.action_search);
+        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItem search = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) search.getActionView();
+        searchView.setQueryHint("Search...");
+//        searchView.setOnQueryTextListener(this);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                RecyclerAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -90,7 +114,6 @@ public class collectionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_export_csv:
-                Toast.makeText(this, "Exportando..", Toast.LENGTH_SHORT).show();
                 exportDB();
                 break;
         }
@@ -102,7 +125,8 @@ public class collectionActivity extends AppCompatActivity {
         List<Sample> samples = dao.getSamples();
         dao.close();
 
-        recyclerView.setAdapter(new recyclerAdapter(samples, this));
+        RecyclerAdapter = new recyclerAdapter(samples, this);
+        recyclerView.setAdapter(RecyclerAdapter);
 
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
@@ -183,6 +207,7 @@ public class collectionActivity extends AppCompatActivity {
         }
 
         dao.close();
+        Toast.makeText(this, "Exported!", Toast.LENGTH_SHORT).show();
     }
 
     public static String stripAccents(String s) {
@@ -190,4 +215,5 @@ public class collectionActivity extends AppCompatActivity {
         s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
         return s;
     }
+
 }

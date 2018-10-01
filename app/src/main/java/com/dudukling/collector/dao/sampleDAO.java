@@ -125,6 +125,7 @@ public class sampleDAO extends SQLiteOpenHelper {
             sample.setSpeciesFamily(c.getString(c.getColumnIndex("speciesFamily")));
             sample.setGenus(c.getString(c.getColumnIndex("genus")));
             sample.setSpecies(c.getString(c.getColumnIndex("species")));
+            sample.setCollector(c.getString(c.getColumnIndex("collector")));
             sample.setNotes(c.getString(c.getColumnIndex("notes")));
             sample.setLocnotes(c.getString(c.getColumnIndex("locnotes")));
 

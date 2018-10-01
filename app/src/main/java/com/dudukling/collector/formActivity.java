@@ -153,6 +153,8 @@ public class formActivity extends AppCompatActivity {
                     }
                     //Toast.makeText(formActivity.this, "Salvando: " + sample.getSpecies() + " !", Toast.LENGTH_LONG).show();
                     finish();
+                }else{
+                    Toast.makeText(formActivity.this, "Please, fill all the required fields!", Toast.LENGTH_LONG).show();
                 }
                 break;
 

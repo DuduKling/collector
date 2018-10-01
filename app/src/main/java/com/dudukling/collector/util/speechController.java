@@ -77,28 +77,30 @@ public class speechController {
 
     @SuppressLint("ClickableViewAccessibility")
     private void setSpeechRecognizerToButton(Button button, final EditText editText, final ProgressBar progressBar) {
-        button.setOnTouchListener(new View.OnTouchListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View v) {
                 setSpeechRecognizer(editText, progressBar);
                 editText.requestFocus();
 
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        mSpeechRecognizer.stopListening();
-                        //showProgressBar(progressBar);
-                        editText.setHint(null);
-                        break;
-
-                    case MotionEvent.ACTION_DOWN:
-                        mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
-                        //editText.setText("");
-                        editText.setHint("Listening...");
-                        break;
-                }
-                return false;
+                mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
             }
         });
+
+//        switch (motionEvent.getAction()) {
+//            case MotionEvent.ACTION_UP:
+//                mSpeechRecognizer.stopListening();
+//                editText.setHint(null);
+//                break;
+//
+//            case MotionEvent.ACTION_DOWN:
+
+//        button.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//            }
+//        });
     }
 
     public void disableSpeechButtons() {
@@ -136,7 +138,7 @@ public class speechController {
         mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle bundle) {
-
+                finalEditText.setHint("Listening...");
             }
 
             @Override
@@ -162,7 +164,9 @@ public class speechController {
 
             @Override
             public void onError(int i) {
-
+                mSpeechRecognizer.stopListening();
+                finalEditText.setHint("Sorry, couldn't understand..");
+                hideSpeechProgressBar(progressBar);
             }
 
             @SuppressLint("SetTextI18n")

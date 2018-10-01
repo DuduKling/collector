@@ -47,9 +47,12 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
         albumViewHolder holder = (albumViewHolder) viewHolder;
 
         Bitmap bitmap = BitmapFactory.decodeFile(imagesList.get(position));
-        Bitmap smallerBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+
+        Bitmap smallerBitmap = resize(bitmap, 200, 200);
+
+        //Bitmap smallerBitmap = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
         holder.imageViewAlbum.setImageBitmap(smallerBitmap);
-        holder.imageViewAlbum.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        holder.imageViewAlbum.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
 //        sampleDAO dao = new sampleDAO(context);
 //        String qtdImgsDB = dao.countImages(sampleID);
@@ -102,6 +105,27 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
+        }
+    }
+
+    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
         }
     }
 }
