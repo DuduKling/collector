@@ -67,4 +67,5 @@ public class albumActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

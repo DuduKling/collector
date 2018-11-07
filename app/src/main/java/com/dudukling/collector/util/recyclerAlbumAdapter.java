@@ -1,6 +1,7 @@
 package com.dudukling.collector.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -12,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.dudukling.collector.imageActivity;
 import com.dudukling.collector.R;
 import com.dudukling.collector.albumActivity;
 import com.dudukling.collector.dao.sampleDAO;
+import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
 import java.util.ArrayList;
@@ -75,6 +78,18 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
             if(type != null && type.equals("edit")){
                 view.setOnCreateContextMenuListener(this);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Intent goToImageActivity = new Intent(context, imageActivity.class);
+                    goToImageActivity.putExtra("image_url", imagesList.get(position))
+                            .putExtra("position", Integer.toString(position+1));
+                    context.startActivity(goToImageActivity);
+                }
+            });
+
         }
 
         @Override
