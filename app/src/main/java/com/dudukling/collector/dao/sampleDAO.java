@@ -218,6 +218,12 @@ public class sampleDAO extends SQLiteOpenHelper {
         db.delete("Images","collectionID = ? AND id = ?", params);
     }
 
+    public void truncateDBs() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("Collection", null,null);
+        db.delete("Images", null,null);
+    }
+
     public int getImageIdDB(String imagePath) {
         SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT id FROM Images WHERE path = ?";

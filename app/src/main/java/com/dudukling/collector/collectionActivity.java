@@ -1,6 +1,7 @@
 package com.dudukling.collector;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.location.Location;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.util.SortedList;
@@ -26,12 +28,14 @@ import android.widget.Toast;
 import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.model.Sample;
 import com.dudukling.collector.util.CSVWriter;
+import com.dudukling.collector.util.formHelper;
 import com.dudukling.collector.util.recyclerAdapter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +43,7 @@ import java.util.List;
 public class collectionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private recyclerAdapter RecyclerAdapter;
+    private List<Sample> samples;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,6 @@ public class collectionActivity extends AppCompatActivity {
         dao.close();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -116,13 +120,16 @@ public class collectionActivity extends AppCompatActivity {
             case R.id.menu_export_csv:
                 exportDB();
                 break;
+            case R.id.menu_delete_all:
+                deleteAll();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void loadRecycler() {
         sampleDAO dao = new sampleDAO(this);
-        List<Sample> samples = dao.getSamples();
+        samples = dao.getSamples();
         dao.close();
 
         RecyclerAdapter = new recyclerAdapter(samples, this);
@@ -208,6 +215,46 @@ public class collectionActivity extends AppCompatActivity {
 
         dao.close();
         Toast.makeText(this, "Exported!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void deleteAll() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Toast.makeText(collectionActivity.this, "siiiiiiiiiiim!", Toast.LENGTH_LONG).show();
+
+                        if(!samples.isEmpty()) {
+                            for(int i=0; i<samples.size(); i++) {
+                                Sample sample = samples.get(i);
+                                List<String> sampleImages = sample.getImagesList();
+                                if (!sampleImages.isEmpty()){
+                                    formHelper.deleteImagesFromPhoneMemory(sample);
+                                }
+                            }
+                        }
+
+                        sampleDAO dao = new sampleDAO(collectionActivity.this);
+                        dao.truncateDBs();
+                        dao.close();
+
+                        samples.clear();
+                        RecyclerAdapter.notifyDataSetChanged();
+                        //Yes button clicked
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //Toast.makeText(collectionActivity.this, "no", Toast.LENGTH_LONG).show();
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete all collections?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     public static String stripAccents(String s) {
