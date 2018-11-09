@@ -36,6 +36,7 @@ import java.io.FileWriter;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -123,8 +124,52 @@ public class collectionActivity extends AppCompatActivity {
             case R.id.menu_delete_all:
                 deleteAll();
                 break;
+//            case R.id.menu_create_many:
+//                createMany();
+//                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createMany() {
+        sampleDAO dao = new sampleDAO(this);
+        int lastID = dao.lastID();
+
+        Date todayDate = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        Sample sampleTeste = new Sample();
+        for(int i=0; i<1000; i++){
+            sampleTeste.setDate(formatter.format(todayDate));
+            sampleTeste.setId(lastID+1+i);
+
+            sampleTeste.setNumber("0"+i);
+            sampleTeste.setSpeciesFamily("Família "+i);
+            sampleTeste.setGenus("Gênero "+i);
+            sampleTeste.setSpecies("Espécie "+i);
+
+            sampleTeste.setCollector("");
+            sampleTeste.setNotes("");
+            sampleTeste.setLocnotes("");
+            sampleTeste.setGPSLatitude("");
+            sampleTeste.setGPSLongitude("");
+            sampleTeste.setGPSAltitude("");
+
+            sampleTeste.setGeoCountry("");
+            sampleTeste.setGeoState("");
+            sampleTeste.setGeoCity("");
+            sampleTeste.setGeoNeighborhood("");
+
+            sampleTeste.setHasFlower("");
+            sampleTeste.setHasFruit("");
+
+            List<String> myList = new ArrayList<>();
+            sampleTeste.setImagesList(myList);
+
+            dao.insert(sampleTeste);
+        }
+
+        dao.close();
     }
 
     public void loadRecycler() {
@@ -187,16 +232,21 @@ public class collectionActivity extends AppCompatActivity {
                 String neighborhood = stripAccents(curCSV.getString(17));
 
                 // Fix GPS:
-                String LatHemisphere;
-                String LongHemisphere;
-                if (Double.parseDouble(latitude) < 0){LatHemisphere = "S";
-                }else{LatHemisphere = "N";}
-                if (Double.parseDouble(longitude) < 0){LongHemisphere = "W";
-                }else{LongHemisphere = "E";}
-                String latitudeDegrees = Location.convert(Math.abs(Double.parseDouble(latitude)), Location.FORMAT_SECONDS);
-                String[] latitudeSplit = latitudeDegrees.split(":");
-                String longitudeDegrees = Location.convert(Math.abs(Double.parseDouble(longitude)), Location.FORMAT_SECONDS);
-                String[] longitudeSplit = longitudeDegrees.split(":");
+                String LatHemisphere = " ";
+                String LongHemisphere = " ";
+                String[] latitudeSplit = new String[3];
+                String[] longitudeSplit = new String[3];
+
+                if((latitude != null && !latitude.isEmpty()) && (longitude != null && !longitude.isEmpty())){
+                    if (Double.parseDouble(latitude) < 0){LatHemisphere = "S";
+                    }else{LatHemisphere = "N";}
+                    if (Double.parseDouble(longitude) < 0){LongHemisphere = "W";
+                    }else{LongHemisphere = "E";}
+                    String latitudeDegrees = Location.convert(Math.abs(Double.parseDouble(latitude)), Location.FORMAT_SECONDS);
+                    latitudeSplit = latitudeDegrees.split(":");
+                    String longitudeDegrees = Location.convert(Math.abs(Double.parseDouble(longitude)), Location.FORMAT_SECONDS);
+                    longitudeSplit = longitudeDegrees.split(":");
+                }
 
                 // Fix Date:
                 String[] dateSplit = date.split("/");

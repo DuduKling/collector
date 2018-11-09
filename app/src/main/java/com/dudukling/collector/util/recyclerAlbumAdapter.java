@@ -1,5 +1,6 @@
 package com.dudukling.collector.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,7 +21,10 @@ import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -121,6 +125,7 @@ public class recyclerAlbumAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+
     }
 
     private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {

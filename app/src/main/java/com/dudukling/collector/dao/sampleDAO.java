@@ -109,7 +109,7 @@ public class sampleDAO extends SQLiteOpenHelper {
     public List<Sample> getSamples() {
         SQLiteDatabase db = getReadableDatabase();
 
-        String sql = "SELECT * FROM Collection";
+        String sql = "SELECT * FROM Collection ORDER BY id DESC";
 
         Cursor c = db.rawQuery(sql, null);
         List<Sample> samples = new ArrayList<>();

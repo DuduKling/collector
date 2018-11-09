@@ -25,7 +25,10 @@ import com.dudukling.collector.dao.sampleDAO;
 import com.dudukling.collector.formActivity;
 import com.dudukling.collector.model.Sample;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter implements Filterable {
