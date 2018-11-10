@@ -122,7 +122,7 @@ public class recyclerAdapter extends RecyclerView.Adapter implements Filterable 
         public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
             //menu.setHeaderTitle("Selecione a ação:");
 
-            MenuItem menuEdit = menu.add("Editar");
+            MenuItem menuEdit = menu.add("Edit");
             menuEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -138,7 +138,7 @@ public class recyclerAdapter extends RecyclerView.Adapter implements Filterable 
                 }
             });
 
-            MenuItem menuDelete = menu.add("Deletar");
+            MenuItem menuDelete = menu.add("Delete");
             menuDelete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
