@@ -1,18 +1,22 @@
 package com.dudukling.collector;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +46,7 @@ import java.util.List;
 
 
 public class collectionActivity extends AppCompatActivity {
+    private static final int WRITE_PERMISSION_CODE = 888;
     private RecyclerView recyclerView;
     private recyclerAdapter RecyclerAdapter;
     private List<Sample> samples;
@@ -54,6 +59,8 @@ public class collectionActivity extends AppCompatActivity {
 
         startNewRegisterButton();
         registerForContextMenu(recyclerView);
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
     private void startNewRegisterButton() {
@@ -115,11 +122,12 @@ public class collectionActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_export_csv:
-                exportDB();
+                checkPermissionBeforeExport();
                 break;
             case R.id.menu_delete_all:
                 deleteAll();
@@ -139,7 +147,7 @@ public class collectionActivity extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         Sample sampleTeste = new Sample();
-        for(int i=0; i<1000; i++){
+        for(int i=0; i<50; i++){
             sampleTeste.setDate(formatter.format(todayDate));
             sampleTeste.setId(lastID+1+i);
 
@@ -182,8 +190,15 @@ public class collectionActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
+    }
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissionBeforeExport() {
+        if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
+        } else {
+            exportDB();
+        }
     }
 
     private void exportDB() {
@@ -259,12 +274,26 @@ public class collectionActivity extends AppCompatActivity {
             csvWrite.close();
             curCSV.close();
 
+
+            Toast.makeText(this, "Exported!", Toast.LENGTH_SHORT).show();
+
         }catch(Exception sqlEx){
             Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
         }
 
         dao.close();
-        Toast.makeText(this, "Exported!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == WRITE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this, "Can't export due to denied permission!", Toast.LENGTH_SHORT).show();
+            } else{
+                exportDB();
+            }
+        }
     }
 
     private void deleteAll() {
