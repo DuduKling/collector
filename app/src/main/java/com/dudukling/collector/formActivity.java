@@ -279,12 +279,12 @@ public class formActivity extends AppCompatActivity {
             if(requestCode == ALBUM_RESULT_CODE){
                 //Toast.makeText(formActivity.this, "Voltaaaa", Toast.LENGTH_LONG).show();
 
-                sampleDAO dao = new sampleDAO(formActivity.this);
-                int savedSampleID = sample.getId();
-                List<Sample> samples = dao.getSamples();
-                sample = samples.get(savedSampleID - 1);
-                helperForm.fillForm(sample);
-                dao.close();
+//                sampleDAO dao = new sampleDAO(formActivity.this);
+//                int savedSampleID = sample.getId();
+//                List<Sample> samples = dao.getSamples();
+//                sample = samples.get(savedSampleID - 1);
+//                helperForm.fillForm(sample);
+//                dao.close();
             }
         }
 
