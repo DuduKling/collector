@@ -1,45 +1,57 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# collector
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+Aplicativo Android para Coletas Botânicas.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+Monografia desenvolvida durante a disciplina de Projeto Final de Curso apresentada ao Centro de Engenharia e Computação da Universidade Católica de Petrópolis, como pré-requisito para a obtenção do título de Bacharel em Engenharia de Computação.
 
----
 
-## Edit a file
+## Objetivo
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+O objetivo principal é o desenvolvimento de um aplicativo para ser utilizado por botânicos nas coletas realizadas em excursões. Auxiliando e facilitando na coleta de informações das amostras.
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
 
----
+## Projeto
 
-## Create a file
+<img src="./docs/animated-1.gif" width="45%" /> <img src="./docs/animated-2.gif" width="45%" />
+<img src="./docs/animated-3.gif" width="45%" /> <img src="./docs/animated-4.gif" width="45%" />
+<img src="./docs/animated-5.gif" width="45%" /> <img src="./docs/animated-6.gif" width="45%" />
+<img src="./docs/animated-6.gif" width="45%" /> <img src="./docs/animated-8.gif" width="45%" />
 
-Next, you’ll add a new file to this repository.
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+### Telas
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+<img src="./docs/imagem-1.png" width="45%" /> <img src="./docs/imagem-2.png" width="45%" />
+<img src="./docs/imagem-3.png" width="45%" /> <img src="./docs/imagem-4.png" width="45%" />
+<img src="./docs/imagem-5.png" width="45%" /> <img src="./docs/imagem-6.png" width="45%" />
+<img src="./docs/imagem-6.png" width="45%" /> <img src="./docs/imagem-8.png" width="45%" />
 
----
 
-## Clone a repository
+## Contextualização
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+A área da botânica realiza diversos tipos de pesquisas que necessitam de amostras de exemplares.
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+Para se ter essas amostras, os pesquisadores têm que ir no campo, coletar, identificar e transportá-las para posterior preparo e armazenamento em um herbário.
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+No campo, os pesquisadores muitas vezes enfrentam condições adversas de trabalho pois é um ambiente hostil.
+
+A principal preocupação é realizar o máximo de coletas e registro de informações em um espaço curto de tempo para aproveitar a excursão, que tem altos custos.
+
+Os coletores registram, em cadernos de coletas, os dados das amostras coletadas.
+
+O fato de utilizarem cadernos acarreta em uma perda de tempo, impactando na quantidade total de amostras coletadas e também nos detalhes coletados.
+
+Os pesquisadores organizam o material coletado na forma de uma coleção científica de plantas secas (desidratadas) e prensadas, denominadas exsicatas.
+
+As exsicatas podem permanecer por centenas de anos servindo para identificação de espécies de plantas, ou como fonte de estudos para diversas áreas, como a taxonomia e a ecologia.
+
+São consideradas como testemunhos da ocorrência das espécies na natureza.
+
+Ao redor do mundo, existem aproximadamente 3.400 herbários registrados no Index Herbariorum.
+
+Totalizando, em seus acervos, cerca de 350 milhões de espécimes preservados.
+
+Os herbários são instituições antigas, no mundo, temos como exemplo o Museu de História Natural da França (1793).
+
+Na América Latina, o Herbário Nacional do México (1888) é o maior.
+
+No Brasil, destaca-se o herbário do Instituto de Pesquisas Jardim Botânico do Rio de Janeiro (1808).
